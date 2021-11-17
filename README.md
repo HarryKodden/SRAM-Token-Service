@@ -1,7 +1,7 @@
+
 # Diagrams
 
 ### SRAM_Authentication
 
-```plantuml
-!include assets/SRAM_Authentication.iuml
-```
+
+![assets/SRAM_Authentication.iuml](%PLANT_URL%&src=%REPO_URL%/assets/SRAM_Authentication.iuml)
