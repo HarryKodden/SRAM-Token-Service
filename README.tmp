@@ -14,3 +14,17 @@ The wallet application allows authenticated users to pick up some secrets that a
 
 
 ![assets/wallet.iuml](%PLANT_URL%&src=%REPO_URL%/assets/wallet.iuml)
+
+### SRAM to Vault Synchronization
+
+___Under construction___
+
+
+![assets/sync_vault.iuml](%PLANT_URL%&src=%REPO_URL%/assets/sync_vault.iuml)
+
+### SRAM to iRODS Synchronization
+
+___Under construction___
+
+
+![assets/sync_irods.iuml](%PLANT_URL%&src=%REPO_URL%/assets/sync_irods.iuml)

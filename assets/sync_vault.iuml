@@ -1,0 +1,5 @@
+@startuml
+group SRAM to Vault Sync
+
+end
+@enduml

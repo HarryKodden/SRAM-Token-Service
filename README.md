@@ -14,3 +14,17 @@ The wallet application allows authenticated users to pick up some secrets that a
 
 
 ![assets/wallet.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wallet.iuml)
+
+### SRAM to Vault Synchronization
+
+___Under construction___
+
+
+![assets/sync_vault.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/sync_vault.iuml)
+
+### SRAM to iRODS Synchronization
+
+___Under construction___
+
+
+![assets/sync_irods.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/sync_irods.iuml)
