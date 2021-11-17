@@ -28,3 +28,10 @@ ___Under construction___
 
 
 ![assets/sync_irods.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/sync_irods.iuml)
+
+### SRAM to AzureAD Synchronization
+
+___Under construction___
+
+
+![assets/azure.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/azure.iuml)
