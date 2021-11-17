@@ -15,3 +15,19 @@ The wallet application allows authenticated users to pick up some secrets that a
 ```plantuml
 !include assets/wallet.iuml
 ```
+
+### SRAM to Vault Synchronization
+
+___Under construction___
+
+```plantuml
+!include assets/sync_vault.iuml
+```
+
+### SRAM to iRODS Synchronization
+
+___Under construction___
+
+```plantuml
+!include assets/sync_irods.iuml
+```
