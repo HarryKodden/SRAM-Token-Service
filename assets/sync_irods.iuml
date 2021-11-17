@@ -1,15 +1,14 @@
 @startuml
-!include <cloudinsight/tomcat>
-!include <cloudinsight/kafka>
-!include <cloudinsight/java>
-!include <cloudinsight/cassandra>
-title Cloudinsight sprites example
-skinparam monochrome true
-rectangle "<$tomcat>\nwebapp" as webapp
-queue "<$kafka>" as kafka
-rectangle "<$java>\ndaemon" as daemon
-database "<$cassandra>" as cassandra
-webapp -> kafka
-kafka -> daemon
-daemon --> cassandra
+!include <osa/desktop/desktop.puml>
+title SRAM to iRODS synchronization
+control cronjob
+participant script
+database LDAP
+database iCAT
+participant "<$desktop>"
+cronjob -> script
+script <-- LDAP: Get Users & Groups
+script <-- iCAT: Get Users & Groups
+script -> iCAT: Sync Users & Groups
+script -> "<$desktop>": Add/Remove Users
 @enduml

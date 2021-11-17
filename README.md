@@ -31,3 +31,11 @@ ___Under construction___
 ```plantuml
 !include assets/sync_irods.iuml
 ```
+
+### SRAM to AzureAD Synchronization
+
+___Under construction___
+
+```plantuml
+!include assets/azure.iuml
+```

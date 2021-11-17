@@ -1,0 +1,9 @@
+@startuml
+!include <azure/AzureCommon.puml>
+!include <azure/Identity/AzureActiveDirectory.puml>
+!include <azure/General/Azure.puml>
+
+left to right direction
+Azure(tenant, "SRAM Tenant", "" )
+AzureActiveDirectory(ad, "Users", "")
+@enduml
