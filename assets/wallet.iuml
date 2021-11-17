@@ -1,10 +1,12 @@
 @startuml
 group Frontend Wallet endpoint
     User -> Wallet: [ SRAM AUTH ]
-    Wallet -> Wallet_API: REMOTE_USER
-    Wallet_API -> Vault: REMOTE_USER
-    Vault --> Wallet_API: Secrets
-    Wallet_API --> Wallet
+    group Shielded Private Network
+        Wallet -> Wallet_API: REMOTE_USER
+        Wallet_API -> Vault: REMOTE_USER
+        Vault --> Wallet_API: Secrets
+        Wallet_API --> Wallet
+    end
     Wallet --> User: Show results
 end
 @enduml

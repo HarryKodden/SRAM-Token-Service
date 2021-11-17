@@ -1,7 +1,7 @@
 @startuml
 group SRAM Authentiacation
-    User -> Portal: Connect to portal .../wallet
-    Portal -> SRAM: OIDC Authenticate
+    User -> Service: Connect to Service
+    Service -> SRAM: OIDC Authenticate
     SRAM -> IDP: Redirect user to IDP
     User -> IDP: User authenticates
     IDP --> SRAM: IDP Authentication successfull (IDP Claim Attributes)
