@@ -7,8 +7,8 @@ group SRAM Authentiacation
     IDP --> SRAM: IDP Authentication successfull (IDP Claim Attributes)
     SRAM --> User: Check Consent
     User -> SRAM: Consent OK
-    SRAM --> Portal: SRAM Authentication succesfull (id token, access token)
-    Portal -> SRAM: OIDC Introspect (access token)
+    SRAM --> Service: SRAM Authentication succesfull (id token, access token)
+    Service -> SRAM: OIDC Introspect (access token)
     SRAM --> Service: User Info
     Service --> User: Go Ahead !
 end
