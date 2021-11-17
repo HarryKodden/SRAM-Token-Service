@@ -10,6 +10,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
 
+      - name: Build 🔧 
+        run: |
+          PLANT_URL="https://www.plantuml.com/plantuml/proxy?cache=no"
+          REPO_URL="https://raw.github.com/$GITHUB_REPOSITORY/main"
+          sed '/./{H;$!d;} ; x ; s/```plantuml//; s/```$//; s~\!include \(.*\)\n~!\[\1\]\(%PLANT_URL%\&src=%REPO_URL%/\1\)~g' README.md > README.tmp
+          sed -e "s#%PLANT_URL%#$PLANT_URL#; s#%REPO_URL%#$REPO_URL#" README.tmp
+          mv README.tmp README.md
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
