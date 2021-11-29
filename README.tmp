@@ -22,6 +22,8 @@ Using token wrapping to handover access to user secrets to services in order to 
 
 ![assets/wrapping.iuml](%PLANT_URL%&src=%REPO_URL%/assets/wrapping.iuml)
 
+[Step by step explanation...](wrapping.md)
+
 ### SRAM to Vault Synchronization
 
 ___Under construction___

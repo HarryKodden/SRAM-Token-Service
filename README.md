@@ -22,6 +22,8 @@ Using token wrapping to handover access to user secrets to services in order to 
 
 ![assets/wrapping.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wrapping.iuml)
 
+[Step by step explanation...](wrapping.md)
+
 ### SRAM to Vault Synchronization
 
 ___Under construction___
