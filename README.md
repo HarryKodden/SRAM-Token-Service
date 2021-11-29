@@ -24,6 +24,8 @@ Using token wrapping to handover access to user secrets to services in order to 
 !include assets/wrapping.iuml
 ```
 
+[Step by step explanation...](wrapping.md)
+
 ### SRAM to Vault Synchronization
 
 ___Under construction___

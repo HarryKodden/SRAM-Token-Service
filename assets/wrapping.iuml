@@ -5,7 +5,7 @@ group Setup
     Platform --> Vault: Get (U) as unprivileged creditials for SERVICE to connect to VAULT
     Platform --> SERVICE: Handover (U)
 end
-group Secret creation
+group Secret management
     Platform --> Vault: Create Secret (S) for user
     Platform --> Vault: Create Policy (P) for secret, limited READ access to user only
 end
