@@ -1,0 +1,18 @@
+@startuml
+group Setup
+    Platform --> Vault: Enable Approle
+    Platform --> Vault: Create Approle for SERVICE (unprivileged approle)
+    Platform --> Vault: Get (U) as unprivileged creditials for SERVICE to connect to VAULT
+    Platform --> SERVICE: Handover (U)
+end
+group Secret creation
+    Platform --> Vault: Create Secret (S) for user
+    Platform --> Vault: Create Policy (P) for secret, limited READ access to user only
+end
+group Impersonating
+    Platform --> SERVICE: Wrap token with policy (P) to access a user secret, deliver to SERVICE
+    SERVICE --> Vault: Connect with unprivileged (U)
+    SERVICE --> Vault: Unwrap the token: New access token (A) is temporary obtained, policy (P) is added to privileges
+    SERVICE --> Vault: Reconnect with (A) amd read (S)
+end
+@enduml

@@ -15,6 +15,13 @@ The wallet application allows authenticated users to pick up some secrets that a
 
 ![assets/wallet.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wallet.iuml)
 
+### Token Wrapping for Impersonating users
+
+Using token wrapping to handover access to user secrets to services in order to allow the service to access secrets on behalf of a certain secret owner.
+
+
+![assets/wrapping.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wrapping.iuml)
+
 ### SRAM to Vault Synchronization
 
 ___Under construction___
