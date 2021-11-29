@@ -132,7 +132,8 @@ curl --request PUT \
     "password":"mypassword"
     }
   }'
-```
+
+
 ### Create Policy
 
 ```bash
