@@ -1,5 +1,11 @@
 @startuml
-group SRAM to Vault Sync
-
-end
+title SRAM to iRODS synchronization
+control cronjob
+participant script
+database LDAP
+database Vault
+cronjob -> script
+script <-- LDAP: Get Users & Groups
+script <-- Vault: Get Users & Groups
+script -> Vault: Create/Delete Users, Groups, Policies, Secrets 
 @enduml

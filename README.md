@@ -16,6 +16,14 @@ The wallet application allows authenticated users to pick up some secrets that a
 !include assets/wallet.iuml
 ```
 
+### Token Wrapping for Impersonating users
+
+Using token wrapping to handover access to user secrets to services in order to allow the service to access secrets on behalf of a certain secret owner.
+
+```plantuml
+!include assets/wrapping.iuml
+```
+
 ### SRAM to Vault Synchronization
 
 ___Under construction___
