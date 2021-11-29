@@ -69,7 +69,7 @@ curl --request GET \
   --header 'X-Vault-Token: <your vault token>'
 ```
 
-__Data received:__
+Vault returns data like:
 
 ```
 {
@@ -89,7 +89,7 @@ curl --request POST \
   --header 'X-Vault-Token: <your vault token>'
 ```
 
-__Data received:__
+Vault returns data like:
 
 ```
 {
@@ -102,9 +102,9 @@ __Data received:__
 }
 ```
 
-### Handover crdentials to **my-service**
+### Handover credentials to **my-service**
 
-Pass in a secured way the credentials payload to the Service
+Pass in a secured way the credentials payload to **my-service**
 
 ```
 {
@@ -202,7 +202,7 @@ curl --request POST \
   }'
 ```
 
-This delivers the client token to connect to vault:
+This delivers the **client_token** to connect to vault (notice that the given policies to this token is limited to 'default'):
 
 ```
 {
@@ -218,7 +218,7 @@ This delivers the client token to connect to vault:
 }
 ```
 
-Now the Service requests Vault to unwrap the received wrapped token using this client_token:
+Now the Service requests Vault to unwrap the received wrapped token using this **client_token**:
 
 ```
 curl --request POST \
@@ -230,7 +230,7 @@ curl --request POST \
 }'
 ```
 
-Vault returns (new) client token, with extra policies attached to it:
+Vault returns (new) **client_token**, with extra policies attached to it:
 
 ```
 {
@@ -247,10 +247,25 @@ Vault returns (new) client token, with extra policies attached to it:
 }
 ```
 
-With this new client token, the Service reads the secret:
+With this new **client_token**, the Service reads the secret:
 
 ```
 curl --request GET \
   --url https://vault.example.org/v1/secret/data/services/my-service/my-user \
   --header 'X-Vault-Token: s.PTDwZPrMu7dubmU6sims41Xc'
+```
+
+The data return looks like:
+
+```
+{
+  ...
+  "data": {
+    "data": {
+      "password": "mypassword"
+    },
+    ...
+  },
+  ...
+}
 ```
