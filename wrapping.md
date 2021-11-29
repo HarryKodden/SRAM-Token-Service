@@ -7,7 +7,8 @@ Here is the diagram on what we would to achieve.
 
 ```plantuml
 !include assets/wrapping.iuml
-```
+```  
+
 
 As you can see the diagram is divided in 3 major parts:
 
@@ -30,7 +31,7 @@ The setup actions need to take place:
    This is required for every service that needs to be able to impersonate
 3. [Get Credentials for that Approle](#create-credentials-for-my-service-to-connect-to-vault)
 Create unprivileged credentials to the service to connect to Vault with AppRole
-4. [Handover credentials to Service](#handover-u-to-my-service)
+1. [Handover credentials to Service](#handover-credentials-to-my-service)
 One time per service: Pass the credentials for that service
 
 ### Enable AppRole
@@ -39,6 +40,7 @@ First we need to make sure that the AppRole feature is an enabled functionaly in
 This is a one-time activation and can be achieved by this command:
 
 ```bash
+
 curl --request POST \
   --url https://vault.example.org/v1/sys/auth/approle \
   --header 'Content-Type: application/json' \
@@ -51,6 +53,7 @@ curl --request POST \
 ### Create an AppRole for Service **my-service**
 
 ```bash
+
 curl --request POST \
   --url https://vault.example.org/v1/auth/approle/role/my-service \
   --header 'Content-Type: application/json' \
@@ -65,6 +68,7 @@ curl --request POST \
 **Get Role ID**
 
 ```bash
+
 curl --request GET \
   --url https://vault.example.org/v1/auth/approle/role/my-service/role-id \
   --header 'X-Vault-Token: <your vault token>'
@@ -73,6 +77,7 @@ curl --request GET \
 Vault returns data like:
 
 ```json
+
 {
   ...
   "data": {
@@ -85,6 +90,7 @@ Vault returns data like:
 **Get Secret ID**
 
 ```bash
+
 curl --request POST \
   --url https://vault.example.org/v1/auth/approle/role/my-service/secret-id \
   --header 'X-Vault-Token: <your vault token>'
@@ -93,6 +99,7 @@ curl --request POST \
 Vault returns data like:
 
 ```json
+
 {
   ...
   "data": {
@@ -108,6 +115,7 @@ Vault returns data like:
 Pass in a secured way the credentials payload to **my-service**
 
 ```json
+
 {
   "role_id": "70389ba5-dcea-5bef-5919-fd4e2bf3e4df",
   "secret_id": "16d0f573-bb35-5b03-d57f-f81ccfdba553"
@@ -123,6 +131,7 @@ At this stage nobody (except Vault Root) has access this secret.
 ### Create Secret
 
 ```bash
+
 curl --request PUT \
   --url https://vault.example.org/v1/secret/data/services/my-service/my-user \
   --header 'Content-Type: application/json' \
@@ -137,6 +146,7 @@ curl --request PUT \
 ### Create Policy
 
 ```bash
+
 curl --request PUT \
   --url https://vault.example.org/v1/sys/policy/my-service-policy \
   --header 'Content-Type: application/json' \
@@ -155,6 +165,7 @@ Now the exciting stuff, how can we make **my-service** to read the secret, so th
 First we need to ask Vault to prepare a "wrapped" token, with the policy that we would like to handover to the service.
 
 ```bash
+
 curl --request POST \
   --url https://vault.example.org/v1/auth/token/create \
   --header 'Content-Type: application/json' \
@@ -168,6 +179,7 @@ curl --request POST \
 The data we get from this request looks something like this:
 
 ```json
+
 {
   ...
   "wrap_info": {
@@ -185,6 +197,7 @@ The data we get from this request looks something like this:
 We now take out the **token** form message and pass that to the service is a trusted way:
 
 ```json
+
 {
     "token": "s.NMHdfWq88oAZwXs5gHxhiHzm"
 }
@@ -205,6 +218,7 @@ curl --request POST \
 This delivers the **client_token** to connect to vault (notice that the given policies to this token is limited to 'default'):
 
 ```json
+
 {
   ...
   "auth": {
@@ -221,6 +235,7 @@ This delivers the **client_token** to connect to vault (notice that the given po
 Now the Service requests Vault to unwrap the received wrapped token using this **client_token**:
 
 ```bash
+
 curl --request POST \
   --url https://vault.example.org/v1/sys/wrapping/unwrap \
   --header 'Content-Type: application/json' \
@@ -233,6 +248,7 @@ curl --request POST \
 Vault returns (new) **client_token**, with extra policies attached to it:
 
 ```json
+
 {
   ...
   "auth": {
@@ -247,9 +263,11 @@ Vault returns (new) **client_token**, with extra policies attached to it:
 }
 ```
 
+
 With this new **client_token**, the Service reads the secret:
 
 ```bash
+
 curl --request GET \
   --url https://vault.example.org/v1/secret/data/services/my-service/my-user \
   --header 'X-Vault-Token: s.PTDwZPrMu7dubmU6sims41Xc'
@@ -258,6 +276,7 @@ curl --request GET \
 The data return looks like:
 
 ```json
+
 {
   ...
   "data": {
