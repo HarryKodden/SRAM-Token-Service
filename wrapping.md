@@ -148,11 +148,11 @@ curl --request PUT \
 ```bash
 
 curl --request PUT \
-  --url https://vault.example.org/v1/sys/policy/my-service-policy \
+  --url https://vault.example.org/v1/sys/policy/my-service-my-user-policy \
   --header 'Content-Type: application/json' \
   --header 'X-Vault-Token: <your vault token>' \
   --data '{ 
-    "policy": "path \"/secret/data/services/my-service/*\" { capabilities = [\"read\"] }"
+    "policy": "path \"/secret/data/services/my-service/my-user\" { capabilities = [\"read\"] }"
   }'
 ```
 
@@ -172,7 +172,7 @@ curl --request POST \
   --header 'X-Vault-Token: <your vault token>' \
   --header 'X-Vault-Wrap-TTL: 120' \
   --data '{
-    "policies":["my-service-policy"]
+    "policies":["my-service-my-user-policy"]
   }'
 ```
 
@@ -256,7 +256,7 @@ Vault returns (new) **client_token**, with extra policies attached to it:
     ...
     "policies": [
       "default",
-      "my-service-policy"
+      "my-service-my-user-policy"
     ],
     ...
   }
