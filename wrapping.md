@@ -1,13 +1,13 @@
 
+
 # Token Wrapping
 
 In this page a step by step walkthrough is explained hwo to use Token Wrapping.
 
 Here is the diagram on what we would to achieve.
 
-```plantuml
-!include assets/wrapping.iuml
-```
+
+![assets/wrapping.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wrapping.iuml)
 
 As you can see the diagram is divided in 3 major parts:
 1. [Setup](#setup)
@@ -45,7 +45,7 @@ curl --request POST \
   --data '{
 	"type": "approle"
   }'
-```
+
 
 ### Create an AppRole for Service **my-service**
 
@@ -57,7 +57,7 @@ curl --request POST \
   --data '{
 	"policies": "default"
   }'
-```
+
 
 ### Create Credentials for **my-service** to connect to Vault
 
@@ -67,9 +67,9 @@ curl --request POST \
 curl --request GET \
   --url https://vault.example.org/v1/auth/approle/role/my-service/role-id \
   --header 'X-Vault-Token: <your vault token>'
-```
 
-__Data received:__
+
+Vault returns data like:
 
 ```
 {
@@ -79,7 +79,7 @@ __Data received:__
   },
   ...
 }
-```
+
 
 **Get Secret ID**
 
@@ -87,9 +87,9 @@ __Data received:__
 curl --request POST \
   --url https://vault.example.org/v1/auth/approle/role/my-service/secret-id \
   --header 'X-Vault-Token: <your vault token>'
-```
 
-__Data received:__
+
+Vault returns data like:
 
 ```
 {
@@ -100,18 +100,18 @@ __Data received:__
   },
   ...
 }
-```
 
-### Handover crdentials to **my-service**
 
-Pass in a secured way the credentials payload to the Service
+### Handover credentials to **my-service**
+
+Pass in a secured way the credentials payload to **my-service**
 
 ```
 {
   "role_id": "70389ba5-dcea-5bef-5919-fd4e2bf3e4df",
   "secret_id": "16d0f573-bb35-5b03-d57f-f81ccfdba553"
 }
-```
+
 
 ## Secret management (Create / Update)
 
@@ -131,7 +131,7 @@ curl --request PUT \
 		"password":"mypassword"
 	}
   }'
-```
+
 
 ### Create Policy
 
@@ -143,7 +143,7 @@ curl --request PUT \
   --data '{ 
 	"policy": "path \"/secret/data/services/my-service/*\" { capabilities = [\"read\"] }"
   }'
-```
+
 
 ## Impersonating
 
@@ -163,7 +163,7 @@ curl --request POST \
   --data '{
 	"policies":["my-service-policy"]
   }'
-```
+
 
 The data we get from this request looks something like this:
 
@@ -180,7 +180,7 @@ The data we get from this request looks something like this:
   },
   ...
 }
-```
+
 
 We now take out the **token** form message and pass that to the service is a trusted way:
 
@@ -188,7 +188,7 @@ We now take out the **token** form message and pass that to the service is a tru
 {
     "token": "s.NMHdfWq88oAZwXs5gHxhiHzm"
 }
-```
+
 
 For the Service in order to consume this token, it first has to authenticate to Vault using his (unprivileged) AppRole credentials:
 
@@ -200,9 +200,9 @@ curl --request POST \
 	"role_id": "70389ba5-dcea-5bef-5919-fd4e2bf3e4df",
 	"secret_id": "16d0f573-bb35-5b03-d57f-f81ccfdba553"
   }'
-```
 
-This delivers the client token to connect to vault:
+
+This delivers the **client_token** to connect to vault (notice that the given policies to this token is limited to 'default'):
 
 ```
 {
@@ -216,9 +216,9 @@ This delivers the client token to connect to vault:
   },
   ...
 }
-```
 
-Now the Service requests Vault to unwrap the received wrapped token using this client_token:
+
+Now the Service requests Vault to unwrap the received wrapped token using this **client_token**:
 
 ```
 curl --request POST \
@@ -228,9 +228,9 @@ curl --request POST \
   --data '{
   "token": "s.NMHdfWq88oAZwXs5gHxhiHzm"
 }'
-```
 
-Vault returns (new) client token, with extra policies attached to it:
+
+Vault returns (new) **client_token**, with extra policies attached to it:
 
 ```
 {
@@ -245,12 +245,27 @@ Vault returns (new) client token, with extra policies attached to it:
     ...
   }
 }
-```
 
-With this new client token, the Service reads the secret:
+
+With this new **client_token**, the Service reads the secret:
 
 ```
 curl --request GET \
   --url https://vault.example.org/v1/secret/data/services/my-service/my-user \
   --header 'X-Vault-Token: s.PTDwZPrMu7dubmU6sims41Xc'
+
+
+The data return looks like:
+
 ```
+{
+  ...
+  "data": {
+    "data": {
+      "password": "mypassword"
+    },
+    ...
+  },
+  ...
+}
+
