@@ -2,9 +2,14 @@
 
 # Token Wrapping
 
+## Introduction
+
 In this page a step by step walkthrough is explained hwo to use Token Wrapping.
 
-Here is the diagram on what we would to achieve.
+The objective is to allow a Service to run a process on behalf of a user, using that user's password to authenticate to some resource.
+In other words: The User delegates the use of his password to be used by a Service.
+
+Here is the diagram on what we would like to achieve.
 
 
 ![assets/wrapping.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wrapping.iuml)```  
@@ -30,7 +35,7 @@ The setup actions need to take place:
 2. [Create an AppRole for a Service](#create-an-approle-for-service-my-service)
    This is required for every service that needs to be able to impersonate
 3. [Get Credentials for that Approle](#create-credentials-for-my-service-to-connect-to-vault)
-Create unprivileged credentials to the service to connect to Vault with AppRole
+Create unprivileged credentials for the service to connect to Vault with AppRole
 1. [Handover credentials to Service](#handover-credentials-to-my-service)
 One time per service: Pass the credentials for that service
 
@@ -52,6 +57,9 @@ curl --request POST \
 
 ### Create an AppRole for Service **my-service**
 
+Now, create a named approle entity that and provide it with credentials to allow this 'app' connect with Vault.
+For this moment we create a bare minimum approle entity. Vault allows for much more app characteristics that provide much more control over the connection between approles and Vault. Refer: https://www.vaultproject.io/api/auth/approle#parameters
+
 ```bash
 
 curl --request POST \
@@ -65,7 +73,12 @@ curl --request POST \
 
 ### Create Credentials for **my-service** to connect to Vault
 
+An Approle needs credentials to perform a Login to Vault. 
+The credentials to do so are **role_id** and **secret_id**.
+
 **Get Role ID**
+
+The **role_id** can be obtained via:
 
 ```bash
 
@@ -88,6 +101,8 @@ Vault returns data like:
 ```
 
 **Get Secret ID**
+
+The **secret_id** can be obtained via:
 
 ```bash
 
@@ -144,6 +159,8 @@ curl --request PUT \
 ```
 
 ### Create Policy
+
+We create a unique policy that only allows 'read' operation on a single identified secret.
 
 ```bash
 
@@ -215,7 +232,7 @@ curl --request POST \
   }'
 ```
 
-This delivers the **client_token** to connect to vault (notice that the given policies to this token is limited to 'default'):
+This delivers the **client_token** to connect to Vault (notice that the given policies to this token is limited to 'default'):
 
 ```json
 
