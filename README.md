@@ -26,6 +26,50 @@ Using token wrapping to handover access to user secrets to services in order to 
 
 [Step by step explanation...](wrapping.md)
 
+### SRAM - Service Impersonation
+
+```plantuml
+@startuml
+actor Researcher
+Researcher -> Wallet: Delegate to Service
+Wallet -> SRAM: Authenticate
+queue Queue
+Wallet --> Queue: Wrapped token for Service
+Service --> Queue: Get message
+Service -> Wallet: Impersonate using wrapped token
+Wallet --> Service: Researcher secret to authenticate in Service
+@enduml
+```
+
+
+### Privacy Sensitive Research Data Vault
+
+___Under construction___
+
+1. Store Privacy Senstive data in a Vault. Link back the reference to the privacy data in Files.
+
+```plantuml
+@startuml
+Researcher -> Application
+Application -> Files: Anonymous data
+Application -> Vault: Privacy Sensitive data
+Files <-- Vault: Link to secrets
+@enduml
+```
+
+2. Store Privacy Senstive data encrypted in files. Store encryption key in Vault.
+
+```plantuml
+@startuml
+Researcher -> Application
+Application -> Files: Anonymous data
+Application -> Cipher: Privacy Sensitive data: Create Cipher and encrypt data
+Cipher -> Vault: Store decryption key
+Cipher -> Files: Store encryped data + key reference
+@enduml
+```
+
+
 ### SRAM to Vault Synchronization
 
 ___Under construction___
