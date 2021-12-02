@@ -29,18 +29,8 @@ Using token wrapping to handover access to user secrets to services in order to 
 ### SRAM - Service Impersonation
 
 ```plantuml
-@startuml
-actor Researcher
-Researcher -> Wallet: Delegate to Service
-Wallet -> SRAM: Authenticate
-queue Queue
-Wallet --> Queue: Wrapped token for Service
-Service --> Queue: Get message
-Service -> Wallet: Impersonate using wrapped token
-Wallet --> Service: Researcher secret to authenticate in Service
-@enduml
+!include assets/impersonation.iuml
 ```
-
 
 ### Privacy Sensitive Research Data Vault
 
