@@ -15,6 +15,7 @@ The wallet application allows authenticated users to pick up some secrets that a
 
 ![assets/wallet.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wallet.iuml)```
 
+
 ### Token Wrapping for Impersonating users
 
 Using token wrapping to handover access to user secrets to services in order to allow the service to access secrets on behalf of a certain secret owner.
@@ -23,6 +24,22 @@ Using token wrapping to handover access to user secrets to services in order to 
 ![assets/wrapping.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/wrapping.iuml)```
 
 [Step by step explanation...](wrapping.md)
+
+### SRAM - Token Introspection
+
+
+![assets/introspection.iuml](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/HarryKodden/SRAM-Token-Service/main/assets/introspection.iuml)```
+
+The **Service** validates the provided token using the Token Based Introspection endpoint of SRAM
+
+```curl
+curl --request POST \
+  --url https://sram.surf.nl/api/tokens/introspect \
+  --header 'Authorization: Bearer <service token>' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data token=<user token>
+```
+
 
 ### SRAM - Service Impersonation
 

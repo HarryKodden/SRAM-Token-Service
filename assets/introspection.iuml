@@ -1,0 +1,14 @@
+@startuml
+group Prepare Token
+actor Researcher
+Researcher -> SRAM: Open+Authenticate SRAM portal
+Researcher <-- SRAM: Create Token
+end
+group Researcher use Service
+Researcher -> Service: Credentials [Username + Token]
+Service -> SRAM: Token Introspection [Service Token + User Token]
+SRAM --> Service: Inspection user details
+Service -> Service: Assert Username matches Instrospection username
+Service -> Researcher: Authenticated !
+end
+@enduml
