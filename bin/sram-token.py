@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 
 # Workaround for CVE-2019-16729
 # https://sourceforge.net/p/pam-python/tickets/8/
@@ -7,6 +7,10 @@ site.main()
 
 import syslog
 import traceback
+import sys
+
+sys.path.append('/usr/local/lib/python2.7/dist-packages')
+
 import requests
 
 DEFAULT_USER  = "nobody"
@@ -81,7 +85,7 @@ def pam_sm_authenticate(pamh, flags, argv):
 
         if (response.status_code == 200):
             data = response.json()
-            if data["username"].upper() == username.upper()
+            if data["username"].upper() == username.upper():
                 rval = pamh.PAM_SUCCESS
             else:
                 logging(syslog.LOG_ERR, "Username does not match.")
