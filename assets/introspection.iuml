@@ -7,7 +7,7 @@ end
 group Researcher use Service
 Researcher -> Service: Credentials [Username + Token]
 Service -> SRAM: Token Introspection [Service Token + User Token]
-SRAM --> Service: Inspection user details
+SRAM --> Service: Introspection user details
 Service -> Service: Assert Username matches Instrospection username
 Service -> Researcher: Authenticated !
 end
