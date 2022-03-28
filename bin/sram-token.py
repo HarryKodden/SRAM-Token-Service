@@ -22,6 +22,65 @@ def logging(facility, message):
         syslog.syslog(facility, message)
         syslog.closelog()
 
+import hashlib
+import redis
+import json
+
+import datetime
+
+class Cache(object):
+
+    def __init__(self, config):
+        try:
+            self.redis = redis.Redis(
+                host=config.get('REDIS_HOST', 'localhost'),
+                port=int(config.get('REDIS_PORT', '6379')),
+                db=0
+            )
+            for key in self.redis.scan_iter("*"):
+                idle = self.redis.object("idletime", key)
+                if idle > int(config.get('REDIS_MAX_IDLETIME', '3600')):
+                    self.redis.delete(key)
+        except Exception as e:
+            logging(syslog.LOG_ERR, "Error initializing redis...{}".format(str(e)))
+            self.redis = None
+
+    def digest(self, data):
+        h = hashlib.new('sha512')
+        h.update(bytes(data))
+        return h.hexdigest()
+
+    def key(self, url, headers):
+        return self.digest(
+            json.dumps(
+                {
+                    'url': url,
+                    'headers': headers
+                }
+            )
+        )
+
+    def val(self, payload):
+        return self.digest(payload)
+
+    def remember(self, payload, url, headers={}):
+        if self.redis:
+            self.redis.set(self.key(url, headers), self.val(payload))
+
+    def validate(self, payload, url, headers={}):
+        if not self.redis:
+            return False
+
+        key = self.key(url, headers)
+        if not key:
+            return False
+
+        val = self.redis.get(key)
+        if val and val == self.val(payload):
+            return True
+
+        self.redis.delete(key)
+
 
 def get_config(argv):
     """
@@ -39,7 +98,10 @@ def get_config(argv):
             config[argument[0]] = argument[1]
     return config
 
+
 def pam_sm_authenticate(pamh, flags, argv):
+
+    start = datetime.datetime.now()
 
     config = get_config(argv)
     
@@ -73,35 +135,47 @@ def pam_sm_authenticate(pamh, flags, argv):
             response = pamh.conversation(message)
             pamh.authtok = response.resp
 
+        cache = Cache(config)
+
         payload = "token={}".format(pamh.authtok)
         headers = {
             "Authorization": "Bearer {}".format(config.get('token','missing...')),
             "Content-Type": "application/x-www-form-urlencoded"
         }
 
-        response = requests.request("POST", url, data=payload, headers=headers, verify=sslverify)
-
-        logging(syslog.LOG_DEBUG, response.text)
-
-        if (response.status_code == 200):
-            data = response.json()
-            if data["username"].upper() == username.upper():
-                rval = pamh.PAM_SUCCESS
-            else:
-                logging(syslog.LOG_ERR, "Username does not match.")
+        if cache.validate(payload, url, headers=headers):
+            rval = pamh.PAM_SUCCESS
         else:
-            logging(syslog.LOG_ERR, "{} returns: {}".format(url, response.status_code))
+            response = requests.request("POST", url, data=payload, headers=headers, verify=sslverify)
 
-    except Exception as e:
-        logging(syslog.LOG_ERR, traceback.format_exc())
-        logging(syslog.LOG_ERR, "%s: %s" % (__name__, e))
+            logging(syslog.LOG_DEBUG, response.text)
+
+            if (response.status_code == 200):
+                data = response.json()
+                if data["username"].upper() == username.upper():
+                    cache.remember(payload, url, headers=headers)
+                    rval = pamh.PAM_SUCCESS
+                else:
+                    logging(syslog.LOG_ERR, "Username does not match.")
+            else:
+                logging(syslog.LOG_ERR, "{} returns: {}".format(url, response.status_code))
 
     except requests.exceptions.SSLError:
         logging(syslog.LOG_CRIT, "%s: SSL Validation error. Get a valid "
                                  "SSL certificate, For testing you can use the "
                                  "options 'nosslverify'." % __name__)
 
+    except Exception as e:
+        logging(syslog.LOG_ERR, traceback.format_exc())
+        logging(syslog.LOG_ERR, "%s: %s" % (__name__, e))
+
+
+
+    duration = datetime.datetime.now() - start
+    logging(syslog.LOG_DEBUG, "Duration: {} microsecond".format(duration.microseconds))
+
     return rval
+
 
 def pam_sm_setcred(pamh, flags, argv):
   return pamh.PAM_SUCCESS
