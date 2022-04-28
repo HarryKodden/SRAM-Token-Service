@@ -16,7 +16,6 @@ sudo apt-get install shtool
 sudo apt-get install libpam-dev
 sudo apt-get install libcurl4-gnutls-dev
 sudo apt-get install libhiredis-dev
-sudo apt-get install libcrypto++-dev
 sudo apt-get install libssl-dev
 
 ~~~
@@ -28,14 +27,14 @@ sudo yum install shtool
 sudo yum install pam-devel
 sudo yum install libcurl curl-devel
 sudo yum install hiredis-devel
+sudo yum install openssl-devel
 ~~~
 
 After cloning the repository, do the following:
 
 ~~~
 cd pam_sram_validate
-ln -s /usr/bin/shtool .
-autoconf
+./autogen.sh
 ./configure
 make
 sudo make install
@@ -67,5 +66,10 @@ Configuration settings:
 
 Config | Meaning | Example
 --- | --- | ---
-... | ... | ...
+debug | extra logging in /var/log/auth | ... debug
+redis | hostname of redis server to cache successful authentications | redis=localhost
+port | port of redis server, defaults to 6379 | port=1234
+ttl | duration that cached results are remain valid for subsequent authentications, defaults to 5 seconds | ttl=5
+url | fqdn of SRAM server | url=https://sram.surf.nl
+
 
