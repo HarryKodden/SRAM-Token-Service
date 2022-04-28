@@ -89,7 +89,7 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 					if (result) {
 						cache_remember(cfg, cache_key, cache_value);
 					} else {
-							logging(LOG_ERR, "Username %s != %s\n", username, user->u.string.ptr);
+						logging(LOG_ERR, "Username %s != %s\n", username, user->u.string.ptr);
 					}
 				} else {
 					logging(LOG_ERR, "Username field not found\n");
