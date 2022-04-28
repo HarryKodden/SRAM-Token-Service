@@ -54,12 +54,12 @@ ln -s /usr/local/lib/security/pam_sram_validate.so /lib/security
 Let:
 - The pam_sram_validate.so module is installed in /usr/local/lib/security
 
-The file /etc/pam.d/irods would then look like:
+The file /etc/pam.d/sample would then look like:
 
 ~~~
 #%PAM-1.0
 auth      sufficient     pam_unix.so
-auth      sufficient     pam_sram_validate.so <...TBC...>
+auth      sufficient     pam_sram_validate.so debug redis=redis token=... url=https://sram.surf.nl
 ~~~
 
 Configuration settings:
@@ -71,5 +71,7 @@ redis | hostname of redis server to cache successful authentications | redis=loc
 port | port of redis server, defaults to 6379 | port=1234
 ttl | duration that cached results are remain valid for subsequent authentications, defaults to 5 seconds | ttl=5
 url | fqdn of SRAM server | url=https://sram.surf.nl
+token | the SRAM token for the SRAM Service to be uses for token introspection | token=...
+
 
 
