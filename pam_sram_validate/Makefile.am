@@ -2,7 +2,7 @@ install: pam_sram_validate.so
 	sudo cp pam_sram_validate.so /lib/x86_64-linux-gnu/security/
 
 test: install
-	echo "auth required pam_sram_validate.so debug url=https://sram.surf.nl token=A3TV6wIt1AqSbn3HdCIgCyOP_38tY-6C1pGI2RwZ79gE" | sudo tee "/etc/pam.d/test"
+	echo "auth required pam_sram_validate.so debug url=https://sram.surf.nl token=..." | sudo tee "/etc/pam.d/test"
 	pamtester test hkodden5 authenticate
 
 #	echo "auth required /lib/x86_64-linux-gnu/security/pam_sram_validate.so debug url=https://sram.surf.nl token=A3TV6wIt1AqSbn3HdCIgCyOP_38tY-6C1pGI2RwZ79gE" redis=redis | sudo tee "/etc/pam.d/test"
