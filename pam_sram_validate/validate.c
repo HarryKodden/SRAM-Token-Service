@@ -47,7 +47,7 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 	char *data = NULL;
 	bool result = false;
 
-	if (cache_validate(cfg, token)) {
+	if (cache_validate(cfg, username, token)) {
 		logging(LOG_INFO, "Matched from cache !\n");
 		return true;
 	}
@@ -82,10 +82,10 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 				if (user && exp) {
 					result = (strcasecmp(username, user->u.string.ptr) == 0);
 					
-					long expiration = MIN(exp->u.integer, time(NULL)+atoi(cfg->ttl) * 60);
+					long expiration = MIN(exp->u.integer, (time(NULL)+(atoi(cfg->ttl) * 60)));
 
 					if (result) {
-						cache_remember(cfg, token, expiration);
+						cache_remember(cfg, username, token, expiration);
 					} else {
 						logging(LOG_ERR, "Username %s != %s\n", username, user->u.string.ptr);
 					}
