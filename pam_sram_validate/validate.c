@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 
 #include "logging.h"
 #include "validate.h"
@@ -82,12 +83,15 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 
 			if (active && active->u.boolean) {
 				json_value *user = lookup(json, "username");
+				json_value *exp = lookup(json, "exp");
 
-				if (user) {
+				if (user && exp) {
 					result = (strcasecmp(username, user->u.string.ptr) == 0);
-
+					
+					long expiration = MIN(exp->u.integer, time(NULL)+atoi(cfg->ttl) * 60);
+					
 					if (result) {
-						cache_remember(cfg, cache_key, cache_value);
+						cache_remember(cfg, cache_key, cache_value, expiration);
 					} else {
 						logging(LOG_ERR, "Username %s != %s\n", username, user->u.string.ptr);
 					}

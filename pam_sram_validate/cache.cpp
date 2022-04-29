@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 #include <stdbool.h>
+#include <time.h>
 
 #include "cache.h"
 #include "logging.h"
@@ -37,13 +38,13 @@ class Cache {
 				redisFree(redis);
 		}
 
-		void remember(char *key, char *val) {
+		void remember(char *key, char *val, long exp) {
 			if (! redis)
 				return;
 
 			logging(LOG_ERR, "Remembering: %s...\n", key);
 
-			void *reply = redisCommand(redis, "SET %s %s", key, val);
+			void *reply = redisCommand(redis, "SET %s %ld:%s", key, exp, val);
 			freeReplyObject(reply);
 		}
 
@@ -62,8 +63,20 @@ class Cache {
 				return false;
 			}
 
-			bool result = (strcmp(reply->str, val) == 0);
+			char *cached_val, *expiration = strdup(reply->str);
 			freeReplyObject(reply);
+			
+			if ((cached_val = strchr(expiration, ':')) != NULL)
+				*cached_val++ = 0;
+			else {
+				free(expiration);
+				return false;
+			}
+
+			bool result = ((time(NULL) < atoi(expiration)) && (strcmp(cached_val, val) == 0));
+
+			free(expiration);
+			
 			if (result) {
 				logging(LOG_INFO, "Cache Hit for: %s\n", key);
 			} else {
@@ -81,9 +94,9 @@ class Cache {
 
 extern "C"
 {
-	void cache_remember(CONFIG *cfg, char *key, char *val) {
+	void cache_remember(CONFIG *cfg, char *key, char *val, long exp) {
 		Cache *c = new Cache(cfg);
-		c->remember(key, val);
+		c->remember(key, val, exp);
 		delete c;
 	}
 
