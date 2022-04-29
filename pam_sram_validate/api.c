@@ -88,7 +88,6 @@ char *api(const char* url, const char *method, char *headers[], const char* data
 
 		// Check response
 		if (curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code) != CURLE_OK || response_code != 200) {
-			printf("Request to %s --> %ld\n", url, response_code);
 			logging(LOG_ERR, "Request to %s --> %d", url, response_code);
 			return NULL;
 		}
