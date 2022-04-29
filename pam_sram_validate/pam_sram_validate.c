@@ -55,7 +55,7 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **ar
 
     (void) pam_get_authtok(pamh, PAM_AUTHTOK, (const char **) &token, "Token: ");
 
-    if (!secret) {
+    if (!token) {
         free_config(cfg);
         return PAM_AUTH_ERR;
     }
