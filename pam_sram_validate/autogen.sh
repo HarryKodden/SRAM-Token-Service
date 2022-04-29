@@ -1,5 +1,5 @@
 #!/bin/sh
 
 aclocal \
-&& automake --add-missing \
+&& automake --warnings none --add-missing \
 && autoconf
