@@ -8,6 +8,7 @@
 #include "cache.h"
 #include "logging.h"
 #include "json.h"
+#include "digest.h"
 
 #include <hiredis/hiredis.h>
 
@@ -94,16 +95,45 @@ class Cache {
 
 extern "C"
 {
-	void cache_remember(CONFIG *cfg, char *key, char *val, long exp) {
+	static char *key_digest(CONFIG *cfg) {
+		const char *items[3] = { cfg->url, cfg->token, NULL };
+
+		return digest(items);
+	}
+
+	static char *val_digest(const char *secret) {
+		const char *items[2] = { secret, NULL };
+
+		return digest(items);
+	}
+
+	void cache_remember(CONFIG *cfg, const char *secret, long exp) {
 		Cache *c = new Cache(cfg);
+
+		char *key = key_digest(cfg);
+		char *val = val_digest(secret);
+
 		c->remember(key, val, exp);
+		
+		free(key);
+		free(val);
+
 		delete c;
 	}
 
-	bool cache_validate(CONFIG *cfg, char *key, char *val) {
+	bool cache_validate(CONFIG *cfg, const char *secret) {
 		Cache *c = new Cache(cfg);
+
+		char *key = key_digest(cfg);
+		char *val = val_digest(secret);
+
 		bool result = c->validate(key, val);
+
+		free(key);
+		free(val);
+
 		delete c;
+		
 		return result;
 	}
 }

@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-extern void cache_remember(CONFIG *, char *, char *, long);
-extern bool cache_validate(CONFIG *, char *, char *);
+extern void cache_remember(CONFIG *, const char *, long);
+extern bool cache_validate(CONFIG *, const char *);
 
 #ifdef __cplusplus
 }
