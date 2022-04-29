@@ -5,7 +5,7 @@
 
 extern "C"
 {
-    char *digest(char *message[]) {
+    char *digest(const char *message[]) {
 
         unsigned char hash[SHA256_DIGEST_LENGTH];
 

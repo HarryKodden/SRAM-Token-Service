@@ -12,7 +12,6 @@
 #include "validate.h"
 #include "api.h"
 #include "cache.h"
-#include "digest.h"
 #include "json.h"
 
 json_value *lookup(json_value* value, const char* name) {
@@ -46,9 +45,12 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 	char *url =  NULL;
 	char *auth = NULL;
 	char *data = NULL;
-	char *cache_key = NULL;
-	char *cache_value = NULL;
 	bool result = false;
+
+	if (cache_validate(cfg, token)) {
+		logging(LOG_INFO, "Matched from cache !\n");
+		return true;
+	}
 
 	if (
 			(asprintf(&url, "%s/api/tokens/introspect", cfg->url) == -1) ||
@@ -57,14 +59,6 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 		) {
 
 		logging(LOG_ERR, "Error allocating memory\n");
-		goto finalize;
-	}
-
-	cache_key = digest((char *[]) { url, auth, NULL });
-	cache_value = digest((char *[]) { data, NULL });
-
-	if ((result = cache_validate(cfg, cache_key, cache_value)) == true) {
-		logging(LOG_INFO, "Matched from cache !\n");
 		goto finalize;
 	}
 
@@ -89,9 +83,9 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 					result = (strcasecmp(username, user->u.string.ptr) == 0);
 					
 					long expiration = MIN(exp->u.integer, time(NULL)+atoi(cfg->ttl) * 60);
-					
+
 					if (result) {
-						cache_remember(cfg, cache_key, cache_value, expiration);
+						cache_remember(cfg, token, expiration);
 					} else {
 						logging(LOG_ERR, "Username %s != %s\n", username, user->u.string.ptr);
 					}
@@ -114,8 +108,6 @@ finalize:
 	free(url);
 	free(auth);
 	free(data);
-	free(cache_key);
-	free(cache_value);
 
 	return result;
 }

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern char * digest(char *[]);
+extern char * digest(const char *[]);
 
 #ifdef __cplusplus
 }
