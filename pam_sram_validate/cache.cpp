@@ -39,7 +39,7 @@ class Cache {
 				redisFree(redis);
 		}
 
-		void remember(const char *username, const char *secret, long expiration) {
+		void remember(CONFIG *cfg, const char *username, const char *secret, long expiration) {
 			if (! redis)
 				return;
 
