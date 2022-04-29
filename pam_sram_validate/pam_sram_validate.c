@@ -46,27 +46,27 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **ar
         return PAM_AUTH_ERR;
     }
 
-    (void) pam_get_user(pamh, (const char **) &user, NULL);
+    (void) pam_get_user(pamh, (const char **) &user, "User: ");
 
     if (!user) {
         free_config(cfg);
         return PAM_USER_UNKNOWN;
     }
 
-    if (pam_prompt(pamh, PAM_PROMPT_ECHO_ON, &token, "%s", "TOKEN: ") != PAM_SUCCESS) {
-        logging(LOG_ERR, "Unable to get user input");
+    (void) pam_get_authtok(pamh, PAM_AUTHTOK, (const char **) &token, "Token: ");
 
+    if (!secret) {
         free_config(cfg);
         return PAM_AUTH_ERR;
     }
 
     int result = validate(cfg, user, token) ? PAM_SUCCESS : PAM_AUTH_ERR;
 
-    free(token);
     free_config(cfg);
     
     return result;
 }
+
 
 int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv) {
     return (PAM_SUCCESS);
