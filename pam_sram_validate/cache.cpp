@@ -39,28 +39,38 @@ class Cache {
 				redisFree(redis);
 		}
 
-		void remember(char *key, char *val, long exp) {
+		void remember(const char *username, const char *secret, long expiration) {
 			if (! redis)
 				return;
 
+			char *key = key_digest(cfg, username);
+			char *val = val_digest(secret);
+
 			logging(LOG_ERR, "Remembering: %s...\n", key);
 
-			void *reply = redisCommand(redis, "SET %s %ld:%s", key, exp, val);
+			void *reply = redisCommand(redis, "SET %s %ld:%s", key, expiration, val);
 			freeReplyObject(reply);
+
+			free(key);
+			free(val);
 		}
 
-		bool validate(char *key, char *val) {
+		bool validate(CONFIG *cfg, const char *username, const char *secret) {
 			if (! redis)
 				return false;
 
+			char *key = key_digest(cfg, username);
+
 			redisReply *reply = (redisReply *)redisCommand(redis ,"GET %s", key);
 			if (!reply) {
+				free(key);
 				return false;
 			}
 
 			if (!reply->str) {
 				logging(LOG_INFO, "Cache key not found: %s\n", key);
 				freeReplyObject(reply);
+				free(key);
 				return false;
 			}
 
@@ -70,12 +80,14 @@ class Cache {
 			if ((cached_val = strchr(expiration, ':')) != NULL)
 				*cached_val++ = 0;
 			else {
+				free(key);
 				free(expiration);
 				return false;
 			}
 
+			char *val = val_digest(secret);
 			bool result = ((time(NULL) < atoi(expiration)) && (strcmp(cached_val, val) == 0));
-
+			free(val);
 			free(expiration);
 			
 			if (result) {
@@ -86,52 +98,39 @@ class Cache {
 				freeReplyObject(reply);
 			}
 
+			free(key);
+
 			return result;
 		}
 
 	private:
 		redisContext *redis = NULL;
+		
+		char *key_digest(CONFIG *cfg, const char *username) {
+			const char *items[4] = { cfg->url, cfg->token, username, NULL };
+			return digest(items);
+		}
+
+		char *val_digest(const char *secret) {
+			const char *items[2] = { secret, NULL };
+			return digest(items);
+		}
 };
 
 extern "C"
 {
-	static char *key_digest(CONFIG *cfg) {
-		const char *items[3] = { cfg->url, cfg->token, NULL };
-
-		return digest(items);
-	}
-
-	static char *val_digest(const char *secret) {
-		const char *items[2] = { secret, NULL };
-
-		return digest(items);
-	}
-
-	void cache_remember(CONFIG *cfg, const char *secret, long exp) {
+	void cache_remember(CONFIG *cfg, const char *username, const char *secret, long expiration) {
 		Cache *c = new Cache(cfg);
 
-		char *key = key_digest(cfg);
-		char *val = val_digest(secret);
-
-		c->remember(key, val, exp);
-		
-		free(key);
-		free(val);
-
+		c->remember(cfg, username, secret, expiration);
+	
 		delete c;
 	}
 
-	bool cache_validate(CONFIG *cfg, const char *secret) {
+	bool cache_validate(CONFIG *cfg, const char *username, const char *secret) {
 		Cache *c = new Cache(cfg);
 
-		char *key = key_digest(cfg);
-		char *val = val_digest(secret);
-
-		bool result = c->validate(key, val);
-
-		free(key);
-		free(val);
-
+		bool result = c->validate(cfg, username, secret);
 		delete c;
 		
 		return result;
