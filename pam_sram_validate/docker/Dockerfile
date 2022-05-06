@@ -1,5 +1,11 @@
 FROM ubuntu:20.04
 
+ARG UID=1000
+ARG GID=1000
+
+ENV UID=${UID}
+ENV GID=${GID}
+
 RUN apt update
 RUN apt install -y openssh-server
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
@@ -13,8 +19,11 @@ RUN sed -i 's/^ChallengeResponseAuthentication no$/ChallengeResponseAuthenticati
 
 RUN ssh-keygen -A
 
-RUN groupadd --gid 1000 workers \
-    && useradd --uid 1000 --gid workers --shell /bin/bash --create-home worker \
+ENV UID=33333
+ENV GID=33333
+
+RUN groupadd --gid ${GID} workers \
+    && useradd --uid ${UID} --gid workers --shell /bin/bash --create-home worker \
     && adduser worker sudo
 
 ARG PASSWORD=none
@@ -24,6 +33,6 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 WORKDIR /home/worker/work
 
-USER 1000
+USER ${UID}
 
 ENTRYPOINT sudo rsyslogd && sudo service ssh restart && tail -f /dev/null

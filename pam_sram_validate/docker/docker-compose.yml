@@ -9,10 +9,13 @@ services:
   client:
     build:
       context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     container_name: work
     environment:
-      - USERNAME=${USERNAME}
-      - TOKEN=${TOKEN}
+      - USERNAME=${USERNAME:-undefined}
+      - TOKEN=${TOKEN:-undefined}
     volumes:
       - ../:/home/worker/work
       - ~/.gitconfig:/home/worker/.gitconfig:ro
