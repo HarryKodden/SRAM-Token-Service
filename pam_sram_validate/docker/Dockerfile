@@ -11,7 +11,7 @@ RUN apt install -y openssh-server
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 RUN mkdir /run/sshd
 
-RUN apt install -y build-essential make golang libpam-dev pamtester vim ca-certificates git sudo rsyslog 
+RUN apt install -y build-essential make libpam-dev pamtester vim ca-certificates git sudo rsyslog 
 RUN apt install -y autoconf libcurl4-gnutls-dev libhiredis-dev libssl-dev
 
 RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
