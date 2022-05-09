@@ -18,6 +18,6 @@ docker-compose up
 Now start bash session in container:
 
 ```
-docker exec -ti work bash
+docker exec -ti sandbox bash
 ```
 
