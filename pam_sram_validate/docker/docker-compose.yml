@@ -17,7 +17,7 @@ services:
       - USERNAME=${USERNAME:-undefined}
       - TOKEN=${TOKEN:-undefined}
     volumes:
-      - ../:/home/worker/work
+      - ../../:/home/worker/work
       - ~/.gitconfig:/home/worker/.gitconfig:ro
       - ~/.ssh:/home/worker/.ssh:ro
     depends_on:
