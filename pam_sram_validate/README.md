@@ -1,7 +1,7 @@
 ## PAM_SRAM_VALIDATE
 
 ![CodeQL](https://github.com/harrykodden/SRAM-Token-Service/workflows/CodeQL/badge.svg)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://github.com/HarryKodden/SRAM-Token-Service/)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/HarryKodden/SRAM-Token-Service/)
 
 This module provides PAM authentication of a user offering a SRAM User ID and a SRAM User token.
 The PAM module will initiate a token introspection request towards SRAM asking if that user supplied token is a valid token for usage with a given SRAM Service. The Service inspected has to be indicated with a Service Bearer token in the PAM Module configuration parameters. 
