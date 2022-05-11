@@ -1,5 +1,7 @@
 # Docker for sandbox development
 
+You can develop the module in a sandbox envrionment. This sandbox environment contains all dependencies needed for compilation and testing tghe module.
+
 ## Prepare **.env**
 
 Create local **.env** file with a TOKEN value for the SRAM Service bearer token.

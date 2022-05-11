@@ -1,8 +1,12 @@
 ## PAM_SRAM_VALIDATE
 
-...
+![CodeQL](https://github.com/harrykodden/SRAM-Token-Service/workflows/CodeQL/badge.svg)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://github.com/HarryKodden/SRAM-Token-Service/)
 
-Harry Kodden
+This module provides PAM authentication of a user offering a SRAM User ID and a SRAM User token.
+The PAM module will initiate a token introspection request towards SRAM asking if that user supplied token is a valid token for usage with a given SRAM Service. The Service inspected has to be indicated with a Service Bearer token in the PAM Module configuration parameters. 
+
+Since this PAM module might be used in combination with stateless applications, for example WebDAV server authentications, this PAM module might be invoked many times sequentially. For these use-cases a cache mechanism is offered as an optimization option. Using a 'redis' cache provides successfull authentication if subsequent invocations occur within a configurable sequences of seconds (ttl) following a previous successful authentication.
 
 # Install
 
