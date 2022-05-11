@@ -1,4 +1,4 @@
-# Docker for local development
+# Docker for sandbox development
 
 ## Prepare **.env**
 
