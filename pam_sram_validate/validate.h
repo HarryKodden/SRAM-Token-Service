@@ -9,10 +9,6 @@ extern "C" {
 
 #include "config.h"
 
-#ifndef MIN
-#define MIN(a,b) ((a < b) ? a : b)
-#endif
-
 bool validate(CONFIG *cfg, const char *username, const char *token);
 
 #ifdef __cplusplus

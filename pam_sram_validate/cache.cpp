@@ -2,12 +2,13 @@
 #include <iostream>
 #include <functional>
 #include <string>
+#include <cstring>
 #include <stdbool.h>
 #include <time.h>
 
+#include "config.h"
 #include "cache.h"
 #include "logging.h"
-#include "json.h"
 #include "digest.h"
 
 #include <hiredis/hiredis.h>
@@ -22,8 +23,8 @@ class Cache {
 			}
 
 			struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-			unsigned int port = atoi(cfg->port);
-			
+			unsigned int port = MIN(0, MAX(atoi(cfg->port), 65000));
+
 			redis = redisConnectWithTimeout(cfg->redis, port, timeout);
 
 			if (redis == NULL || redis->err) {

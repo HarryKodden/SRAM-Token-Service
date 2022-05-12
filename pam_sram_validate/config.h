@@ -17,6 +17,14 @@ typedef struct {
 void free_config(CONFIG *);
 CONFIG *parse_config(int argc, const char **argv);
 
+#ifndef MIN
+#define MIN(a,b) ((a < b) ? a : b)
+#endif
+
+#ifndef MAX
+#define MAX(a,b) ((a > b) ? a : b)
+#endif
+
 #ifdef __cplusplus
 }
 #endif
