@@ -21,7 +21,7 @@ extern "C"
 
         for (int i = 0; i != SHA256_DIGEST_LENGTH; i++) {
             char *s = (result+(i*2));
-            sprintf(s, "%02x", (unsigned int)hash[i]);
+            snprintf(s, 2+1, "%02x", (unsigned int)hash[i]);
         }
     
         return result;
