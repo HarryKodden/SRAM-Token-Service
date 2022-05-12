@@ -3,7 +3,9 @@
 #include <functional>
 #include <string>
 #include <cstring>
+
 #include <stdbool.h>
+#include <stdlib.h>
 #include <time.h>
 
 #include "config.h"
@@ -23,8 +25,8 @@ class Cache {
 			}
 
 			struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-			unsigned int port = abs(atoi(cfg->port)) & 0x00ff;
-
+			long port = strtol(cfg->port, NULL, 10);
+			
 			redis = redisConnectWithTimeout(cfg->redis, port, timeout);
 
 			if (redis == NULL || redis->err) {
