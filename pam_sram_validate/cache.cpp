@@ -22,7 +22,9 @@ class Cache {
 			}
 
 			struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-			redis = redisConnectWithTimeout(cfg->redis, (unsigned int) atoi(cfg->port), timeout);
+			unsigned int port = atoi(cfg->port);
+			
+			redis = redisConnectWithTimeout(cfg->redis, port, timeout);
 
 			if (redis == NULL || redis->err) {
 				if (redis) {
