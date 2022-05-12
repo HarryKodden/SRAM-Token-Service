@@ -21,7 +21,8 @@ extern "C"
 
         for (int i = 0; i != SHA256_DIGEST_LENGTH; i++) {
             char *s = (result+(i*2));
-            snprintf(s, 2+1, (const char *) "%02x", (unsigned int)hash[i]);
+            const char *fmt = "%02x";
+            snprintf(s, 2+1, fmt, (unsigned int)hash[i]);
         }
     
         return result;
