@@ -33,7 +33,7 @@ void free_config(CONFIG *cfg) {
  * returns the position of the start of the value in the buffer otherwise
  */
 int raw_parse_option(const char* buf, const char* opt_name_with_eq, char** dst) {
-	size_t opt_len = strlen(opt_name_with_eq);
+	size_t opt_len = strnlen(opt_name_with_eq, 100);
 	if (0 == strncmp(buf, opt_name_with_eq, opt_len)) {
 		if (dst && *dst) {
 			logging(LOG_ERR,
