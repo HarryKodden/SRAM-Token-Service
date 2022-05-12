@@ -12,7 +12,7 @@ extern "C"
         SHA256_CTX sha256;
         SHA256_Init(&sha256);
         for (int i=0; message[i]; i++) {
-            SHA256_Update(&sha256,  message[i], strlen( message[i]));
+            SHA256_Update(&sha256,  message[i], strnlen( message[i], 1024));
         }
         SHA256_Final(hash, &sha256);    
 
@@ -20,7 +20,7 @@ extern "C"
         *result = '\0';
 
         for (int i = 0; i != SHA256_DIGEST_LENGTH; i++) {
-            char *s = (result+strlen(result));
+            char *s = (result+(i*2));
             sprintf(s, "%02x", (unsigned int)hash[i]);
         }
     
