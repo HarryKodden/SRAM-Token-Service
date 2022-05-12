@@ -22,7 +22,7 @@ class Cache {
 			}
 
 			struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-			redis = redisConnectWithTimeout(cfg->redis, atoi(cfg->port), timeout);
+			redis = redisConnectWithTimeout(cfg->redis, (unsigned int) atoi(cfg->port), timeout);
 
 			if (redis == NULL || redis->err) {
 				if (redis) {
@@ -107,19 +107,19 @@ class Cache {
 		redisContext *redis = NULL;
 		
 		char *key_digest(CONFIG *cfg, const char *username) {
-			const char *items[4] = { cfg->url, cfg->token, username, NULL };
+			const char *items[] = { cfg->url, cfg->token, username, NULL };
 			return digest(items);
 		}
 
 		char *val_digest(const char *secret) {
-			const char *items[2] = { secret, NULL };
+			const char *items[] = { secret, NULL };
 			return digest(items);
 		}
 };
 
 extern "C"
 {
-	void cache_remember(CONFIG *cfg, const char *username, const char *secret, long expiration) {
+	void cache_remember(CONFIG *cfg, const char *username, const char *secret, unsigned long expiration) {
 		Cache *c = new Cache(cfg);
 
 		c->remember(cfg, username, secret, expiration);

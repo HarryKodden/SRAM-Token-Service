@@ -37,7 +37,7 @@ size_t curl_callback(void* contents, size_t size, size_t nmemb, void* userp) {
 	}
 
 	/* copy contents to buffer */
-	memcpy(&(p->payload[p->size]), contents, realsize);
+	memcpy(p->payload+p->size, contents, realsize);
 
 	/* set new buffer size */
 	p->size += realsize;
@@ -79,7 +79,7 @@ char *api(const char* url, const char *method, char *headers[], const char* data
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&fetcher);
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, PACKAGE_NAME);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
-		curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data ? strlen(data) : 0);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data ? strnlen(data,1024) : 0);
 
 		// Perform the request
 		if (curl_easy_perform(curl) != CURLE_OK) {

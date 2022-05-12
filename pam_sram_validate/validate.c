@@ -69,7 +69,7 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 	);
 
 	if (response) {
-		json_value * json = json_parse(response, strlen(response));
+		json_value * json = json_parse(response, strnlen(response,BUFSIZ));
 		free(response);
 
 		if (json) {
@@ -80,7 +80,7 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 				json_value *exp = lookup(json, "exp");
 
 				if (user && exp) {
-					result = (strcasecmp(username, user->u.string.ptr) == 0);
+					result = (strncasecmp(username, user->u.string.ptr, 32) == 0);
 					
 					long expiration = MIN(exp->u.integer, (time(NULL)+(atoi(cfg->ttl) * 60)));
 
