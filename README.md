@@ -1,3 +1,4 @@
+![CodeQL](https://github.com/harrykodden/SRAM-Token-Service/workflows/CodeQL/badge.svg)
 # Diagrams
 
 ### SRAM Authentication Generic Flow
