@@ -1,5 +1,5 @@
-AC_PREREQ([2.69])
-AC_INIT([pam_sram_validate], [0.1], [BUG-REPORT-ADDRESS])
+AC_PREREQ([2.71])
+AC_INIT([pam_sram_validate],[0.1],[BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([1.10 -Wall no-define foreign]) 
 
 # Check whether a C++ was found (AC_PROG_CXX sets $CXX to "g++" even when it
@@ -27,7 +27,7 @@ AC_CHECK_FUNCS([memset pow strdup])
 
 dnl Check for all required headers
 AC_CHECK_HEADERS(security/pam_appl.h security/pam_modules.h hiredis/hiredis.h curl/curl.h openssl/sha.h,, [
-        AC_WARN([Required header missing, compilation will likely fail.])
+        AC_MSG_WARN(Required header missing, compilation will likely fail.)
 ], [
 #ifdef HAVE_SECURITY_PAM_APPL_H
 #  include <security/pam_appl.h>

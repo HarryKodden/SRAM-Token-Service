@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#define OPENSSL_API_COMPAT 0x10100000L
 #include <openssl/sha.h>
 
 extern "C"
