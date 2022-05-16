@@ -1,4 +1,4 @@
-AC_PREREQ([2.71])
+AC_PREREQ([2.69])
 AC_INIT([pam_sram_validate],[0.1],[BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([1.10 -Wall no-define foreign]) 
 
