@@ -1,7 +1,7 @@
 @startuml
 group Prepare Token
 actor Researcher
-Researcher -> SRAM: Open+Authenticate SRAM portal
+Researcher -> SRAM: Authentication Generic Flow
 Researcher <-- SRAM: Create Token
 end
 group Researcher use Service
