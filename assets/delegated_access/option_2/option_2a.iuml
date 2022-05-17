@@ -1,0 +1,21 @@
+@startuml
+group Process
+Researcher -> ResearchCloud: User opens ResearchCloud
+Researcher <-- ResearchCloud: redirect to SRAM for SRAM authentication
+group SRAM Auth
+Researcher -> SRAM: Authenticate with IDP
+Researcher <-- SRAM: redirect to IDP
+Researcher -> IDP: Authenticate, callback to SRAM
+IDP --> SRAM : Success
+Researcher <-- SRAM: Authenticated
+end
+group Connect with Service
+Researcher -> ResearchCloud: Connect with a service...
+ResearchCloud --> SRAM: GET /api/services
+Researcher <-- ResearchCloud: Show services
+Researcher -> ResearchCloud: Select service to connect with
+ResearchCloud -> SRAM: /user_tokens/generate for that service
+ResearchCloud <-- SRAM: User Token for that service
+end
+end
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+title Delegated access to Service
+
+group Obtain user token for Service B
+actor Researcher
+Researcher -> Service_A: Authenticate SRAM portal
+Researcher <-- Service_A: Redirect to SRAM
+Researcher -> SRAM: Authenticate SRAM portal
+Service_A <-- SRAM: OIDC Access Token
+Researcher -> Service_A: Allow Service_B to authenticate on my behalf
+Service_A --> SRAM: api/user_tokens/generate_token {Service_B Bearer Token + OIDC User Access Token }
+Service_A <-- SRAM: User Token for Service_B
+end
+@enduml

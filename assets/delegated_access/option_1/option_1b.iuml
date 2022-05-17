@@ -1,0 +1,6 @@
+@startuml
+group Delegated Access
+Service_A --> Service_B: [Username + User Token]
+Service_B --> SRAM: PAM Validate [Username + Service B Bearer + User Token]
+end
+@enduml
