@@ -1,4 +1,5 @@
 @startuml
+actor Researcher as "Resource Owner"
 group Process
 Researcher -> ResearchCloud: User opens ResearchCloud
 Researcher <-- ResearchCloud: redirect to SRAM for SRAM authentication
