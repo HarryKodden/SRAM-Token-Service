@@ -3,9 +3,9 @@ participant RP as "Client"
 participant RS as "Resource Server"
 participant AS as "Access Server"
 group Client Authentication
-RP --> RS: [Credentials: Username + User Token]
+RP --> RS: [Credentials: Resource_Owner(Username, User Token)]
 RS -> AS: Validating Credentials
-AS -> SRAM: Do token introspection for [ Service Bearer Token + User Token ]
+AS -> SRAM: Do token introspection for [ Resource_Service(Bearer Token) + Resource_Owner(User Token) ]
 alt successful
 AS <-- SRAM: details
 AS <--> AS: Verify details
