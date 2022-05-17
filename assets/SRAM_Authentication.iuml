@@ -1,5 +1,5 @@
 @startuml
-group SRAM Authentiacation
+group SRAM Authentication
     User -> Service: Connect to Service
     Service -> SRAM: OIDC Authenticate
     SRAM -> IDP: Redirect user to IDP

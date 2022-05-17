@@ -7,6 +7,8 @@ autom4te.cache/
 aclocal.m4
 autoscan.log
 config.status
+config.guess
+config.sub
 configure
 configure.scan
 compile
