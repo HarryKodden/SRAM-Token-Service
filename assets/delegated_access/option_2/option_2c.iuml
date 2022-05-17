@@ -1,0 +1,21 @@
+@startuml
+participant RP as "ResourceCloud"
+participant RS as "iRODS"
+participant AS as "PAM Module"
+group Client Authentication
+RP --> RS: [Credentials: Username + User Token]
+RS -> AS: Validating Credentials
+AS -> SRAM: Do token introspection for [ Service Bearer Token + User Token ]
+alt successful
+AS <-- SRAM: details
+AS <--> AS: Verify details
+alt verify OK
+RS <-- AS: Authenticated !
+else verify not ok
+RS <-- AS: No Access !
+end
+else failed to do introspection
+RS <-- AS: No Access !
+end
+end
+@enduml
