@@ -6,3 +6,16 @@ The wallet application allows authenticated users to pick up some secrets that a
 !include assets/wallet.iuml
 ```
 
+### SRAM - Service Impersonation
+
+```plantuml
+!include assets/impersonation.iuml
+```
+
+### SRAM to Vault Synchronization
+
+___Under construction___
+
+```plantuml
+!include assets/sync_vault.iuml
+```
