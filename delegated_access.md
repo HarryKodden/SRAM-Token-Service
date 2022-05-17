@@ -25,11 +25,11 @@ Trust Relationship:
 
 ### Generic pattern authenticating to Service using a Token
 
-The Client has:
+The Client (OAuth Relying Party) has:
 * Username
 * User Token
 
-The Resource Server:
+The Resource Owner (OAuth):
 * Depends on an Access Server to validate Credentials
 
 The Access Server:
@@ -43,9 +43,9 @@ The Access Server:
 
 Example for iRODS:
 
-Client = ResearchCloud
-Resource Server = iRODS
-Access Server = PAM Module
+* Client = ResearchCloud
+* Resource Server = iRODS
+* Access Server = PAM Module
 
 ```plantuml
 !include assets/delegated_access/option_2/option_2c.iuml
