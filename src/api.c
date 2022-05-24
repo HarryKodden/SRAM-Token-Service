@@ -1,6 +1,5 @@
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
+
+#include "defs.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +10,6 @@
 
 #include "logging.h"
 #include "api.h"
-
 typedef struct {
 	char* payload;
 	size_t size;

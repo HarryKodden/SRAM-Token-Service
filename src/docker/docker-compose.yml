@@ -12,7 +12,6 @@ services:
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
-        PWD: ${PWD:-secret}
     container_name: sandbox
     hostname: sandbox
     environment:

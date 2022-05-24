@@ -1,9 +1,7 @@
 /* Copyright (C) 2022 Harry Kodden
  */
 
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
+#include "defs.h"
 
 #define PAM_SM_ACCOUNT
 #define PAM_SM_AUTH
@@ -16,24 +14,25 @@
 #include <string.h>
 #include <time.h>
 
+#include <security/pam_ext.h>
 #include <security/pam_appl.h>
 #include <security/pam_modules.h>
 
 #include "pam_sram_validate.h"
 
-int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, const char **argv) {
+int pam_sm_open_session(UNUSED pam_handle_t *pamh, UNUSED int flags, UNUSED int argc, UNUSED const char **argv) {
     return (PAM_SUCCESS);
 }
 
-int pam_sm_close_session(pam_handle_t *pamh, int flags, int argc, const char **argv) {
+int pam_sm_close_session(UNUSED pam_handle_t *pamh, UNUSED int flags, UNUSED int argc, UNUSED const char **argv) {
     return (PAM_SUCCESS);
 }
 
-int pam_sm_acct_mgmt(pam_handle_t *pamh, int flags, int argc, const char **argv) {
+int pam_sm_acct_mgmt(UNUSED pam_handle_t *pamh, UNUSED int flags, UNUSED int argc, UNUSED const char **argv) {
     return (PAM_SUCCESS);
 }
 
-int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv) {
+int pam_sm_authenticate(pam_handle_t *pamh, UNUSED int flags, int argc, const char **argv) {
     char *user = NULL;
     char *token = NULL;
 
@@ -68,10 +67,10 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **ar
 }
 
 
-int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv) {
+int pam_sm_setcred(UNUSED pam_handle_t *pamh, UNUSED int flags, UNUSED int argc, UNUSED const char **argv) {
     return (PAM_SUCCESS);
 }
 
-int pam_sm_chauthtok(pam_handle_t *pamh, int flags, int argc, const char **argv) {
+int pam_sm_chauthtok(UNUSED pam_handle_t *pamh, UNUSED int flags,UNUSED  int argc, UNUSED const char **argv) {
     return (PAM_SUCCESS);
 }

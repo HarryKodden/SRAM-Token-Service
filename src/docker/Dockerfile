@@ -2,7 +2,6 @@ FROM ubuntu:latest
 
 ARG UID=1000
 ARG GID=1000
-ARG PWD=secret
 
 RUN apt update
 RUN apt install -y openssh-server
@@ -20,9 +19,6 @@ RUN ssh-keygen -A
 RUN groupadd --gid ${GID} workers \
     && useradd --uid ${UID} --gid workers --shell /bin/bash --create-home worker \
     && adduser worker sudo
-
-ARG PASSWORD=none
-RUN bash -c "echo worker:${PWD} | chpasswd"
 
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 

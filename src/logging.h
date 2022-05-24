@@ -10,10 +10,9 @@ extern "C" {
 #include <syslog.h>
 #include <security/pam_ext.h>
 
-extern pam_handle_t *logging_pamh;
 extern int logging_priority;
+extern pam_handle_t *logging_pamh;
 
-void start_logging(pam_handle_t *pamh);
 void logging(int priority, const char *fmt, ...);
 
 #ifdef __cplusplus

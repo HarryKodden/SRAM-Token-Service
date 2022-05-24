@@ -2,6 +2,7 @@
 config.log
 .deps
 .libs
+*.o
 .env
 autom4te.cache/
 aclocal.m4
