@@ -23,36 +23,33 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([memset pow strdup])
+AC_CHECK_FUNCS([memset strdup])
 
 dnl Check for all required headers
-AC_CHECK_HEADERS(security/pam_appl.h security/pam_modules.h hiredis/hiredis.h curl/curl.h openssl/sha.h,, [
-        AC_MSG_WARN(Required header missing, compilation will likely fail.)
-], [
-#ifdef HAVE_SECURITY_PAM_APPL_H
-#  include <security/pam_appl.h>
-#endif
-#ifdef HAVE_SECURITY_PAM_MODULES_H
-#  include <security/pam_modules.h>
-#endif
-])
+AC_CHECK_HEADERS(security/pam_appl.h security/pam_modules.h hiredis/hiredis.h curl/curl.h openssl/sha.h,,
+        [AC_MSG_WARN(Required header missing, compilation will likely fail')]
+)
 
-# Checks for libraries.
-
+# Checks for required libraries.
 dnl Check for PAM libraries
-AC_CHECK_LIB(pam, pam_get_user)
+AC_CHECK_LIB(pam, pam_get_user,,
+        [AC_MSG_ERROR("Linking against PAM library failed")]
+)
 
 dnl Check for REDIS libraries
-AC_CHECK_LIB(hiredis, redisCommand)
+AC_CHECK_LIB(hiredis, redisCommand,,
+        [AC_MSG_ERROR("Linking against REDIS library failed")]
+)
 
-dnl Check for REDIS libraries
-AC_CHECK_LIB(curl, curl_easy_getinfo)
-
-dnl Check for MATH libraries
-AC_CHECK_LIB(m, pow)
+dnl Check for CURL libraries
+AC_CHECK_LIB(curl, curl_easy_getinfo,,
+        [AC_MSG_ERROR("Linking against CURL library failed")]
+)
 
 dnl Check for CRYPTO libraries
-AC_CHECK_LIB(crypto, main, , [AC_MSG_ERROR("Linking against crypto library failed")])
+AC_CHECK_LIB(crypto, main,,
+        [AC_MSG_ERROR("Linking against CRYPTO library failed")]
+)
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

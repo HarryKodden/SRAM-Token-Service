@@ -1,14 +1,12 @@
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
+#include "defs.h"
 
 #include <stdio.h>
 #include <stdarg.h>
 
 #include "logging.h"
 
-pam_handle_t *logging_pamh = NULL;
 int logging_priority = LOG_ERR;
+pam_handle_t *logging_pamh = NULL;
 
 void logging(int priority, const char *fmt, ...) {
 

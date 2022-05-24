@@ -1,6 +1,8 @@
 #ifndef _CACHE_H
 #define _CACHE_H
 
+#include "config.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

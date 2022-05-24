@@ -1,9 +1,8 @@
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
+#include "defs.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <strings.h>
 #include <time.h>
@@ -12,9 +11,10 @@
 #include "validate.h"
 #include "api.h"
 #include "cache.h"
-#include "json.h"
 
-json_value *lookup(json_value* value, const char* name) {
+#include "../json-parser/json.h"
+
+static json_value *lookup(json_value* value, const char* name) {
 	json_value * result = NULL;
 
 	if (value == NULL) {
@@ -27,7 +27,7 @@ json_value *lookup(json_value* value, const char* name) {
 		*remaining++ = '\0';
 	}
 
-	for (int x = 0; x < value->u.object.length; x++) {
+	for (unsigned int x = 0; x < value->u.object.length; x++) {
 		if (!strcmp(value->u.object.values[x].name, current)) {
 
 			result = (remaining ? lookup(value->u.object.values[x].value, remaining) : value->u.object.values[x].value);
@@ -39,6 +39,21 @@ json_value *lookup(json_value* value, const char* name) {
 	free(current);
 
 	return result;
+}
+
+static char *str_printf(const char * fmt, ...) {
+	char *buffer = NULL;
+	va_list args;
+	
+	va_start(args, fmt);
+	int rc = vasprintf(&buffer, fmt, args);
+	va_end(args);
+
+	if (rc == -1) {
+		logging(LOG_ERR, "Error create string with fmt: %s", fmt);
+		return NULL;
+	}
+	return buffer;
 }
 
 bool validate(CONFIG *cfg, const char *username, const char *token) {
@@ -53,11 +68,10 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 	}
 
 	if (
-			(asprintf(&url, "%s/api/tokens/introspect", cfg->url) == -1) ||
-			(asprintf(&auth, "Authorization: Bearer %s", cfg->token) == -1) ||
-			(asprintf(&data, "token=%s", token) == -1)
-		) {
-
+		! (url = str_printf("%s/api/tokens/introspect", cfg->url)) ||
+		! (auth = str_printf("Authorization: Bearer %s", cfg->token)) ||
+		! (data = str_printf("token=%s", token))
+	) {
 		logging(LOG_ERR, "Error allocating memory\n");
 		goto finalize;
 	}
