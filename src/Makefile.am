@@ -1,5 +1,6 @@
 install: pam_sram_validate.so
-	sudo cp pam_sram_validate.so /lib/x86_64-linux-gnu/security/
+	sudo mkdir -p /lib/security
+	sudo cp pam_sram_validate.so /lib/security/
 
 test: install
 	echo "auth required pam_sram_validate.so debug url=https://sram.surf.nl token=$${TOKEN}" redis=redis | sudo tee "/etc/pam.d/test"
