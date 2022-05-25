@@ -19,8 +19,10 @@ jobs:
         language: [ 'cpp', 'python' ]  # see https://git.io/codeql-language-support
 
     steps:
-    - name: Checkout repository
+    - name: Checkout repository and submodules
       uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Install libraries
       run: |
