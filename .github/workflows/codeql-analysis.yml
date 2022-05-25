@@ -29,13 +29,18 @@ jobs:
         sudo apt update
         sudo apt install -y build-essential make autoconf libpam-dev libcurl4-gnutls-dev libhiredis-dev libssl-dev
 
+    - name: Install libraries
+      run: |
+        git clone https://github.com/json-parser/json-parser.git
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-
+    - name: Make
+      run: |
+        make install
+        
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
