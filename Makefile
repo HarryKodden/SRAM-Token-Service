@@ -11,7 +11,6 @@ src/Makefile: src/Makefile.am src/configure.ac
 # Get / Update json-parser package...
 .PHONY: json-parser
 json-parser:
-	git clone https://github.com/json-parser/json-parser.git
 	git submodule init
 	git submodule update
 
