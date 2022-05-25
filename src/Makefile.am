@@ -3,7 +3,7 @@ install: pam_sram_validate.so
 	sudo cp pam_sram_validate.so /lib/security/
 
 test: install
-	echo "auth required pam_sram_validate.so debug url=https://sram.surf.nl token=$${TOKEN}" redis=redis | sudo tee "/etc/pam.d/test"
+	echo "auth required pam_sram_validate.so debug url=https://sram.surf.nl token=$${TOKEN}" redis=redis entitled=$${ENTITLED} | sudo tee "/etc/pam.d/test"
 	pamtester test $${USERNAME} authenticate
 
 AUTOMAKE_OPTIONS = subdir-objects
