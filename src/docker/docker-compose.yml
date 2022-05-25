@@ -17,6 +17,7 @@ services:
     environment:
       - USERNAME=${USERNAME:-undefined}
       - TOKEN=${TOKEN:-undefined}
+      - ENTITLED=${ENTITLED:-undefined}
     volumes:
       - ../../:/home/worker/work
       - ~/.gitconfig:/home/worker/.gitconfig:ro

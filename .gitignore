@@ -21,3 +21,4 @@ src/Makefile.in
 src/missing
 src/pam_sram_validate.so
 src/pam_sram_validate_so*
+json-parser/

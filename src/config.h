@@ -12,6 +12,7 @@ typedef struct {
     char *redis;
     char *port;
     char *ttl;
+    char *entitled;
 } CONFIG;
 
 void free_config(CONFIG *);

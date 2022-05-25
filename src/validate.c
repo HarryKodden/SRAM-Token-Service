@@ -94,15 +94,37 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 				json_value *exp = lookup(json, "exp");
 
 				if (user && exp) {
-					result = (strncasecmp(username, user->u.string.ptr, 32) == 0);
-					
-					long expiration = MIN(exp->u.integer, (time(NULL)+(atoi(cfg->ttl) * 60)));
+					result = (strcasecmp(username, user->u.string.ptr) == 0);
 
-					if (result) {
-						cache_remember(cfg, username, token, expiration);
-					} else {
+					if (!result) {
 						logging(LOG_ERR, "Username %s != %s\n", username, user->u.string.ptr);
 					}
+
+					if (result && cfg->entitled) {
+						json_value *entitledments = lookup(json, "user.eduperson_entitlement ");
+
+						result = false;
+						if (entitledments) {
+							for (unsigned int x = 0; !result && x < entitledments->u.array.length; x++) {
+								if (entitledments->u.array.values[x]) {
+									char *entitledment = entitledments->u.array.values[x]->u.string.ptr;
+									logging(LOG_DEBUG, "Inspecting: %s...\n", entitledment);
+									result = (strcasecmp(cfg->entitled, entitledment) == 0);
+									if (result) {
+										logging(LOG_DEBUG, "Match: %s !\n", entitledment);
+									}
+								}
+							}
+						} else {
+							logging(LOG_ERR, "Error inspecting entitlements\n");
+						}
+					}
+
+					if (result) {
+						long expiration = MIN(exp->u.integer, (time(NULL)+(atoi(cfg->ttl) * 60)));
+						cache_remember(cfg, username, token, expiration);
+					}
+
 				} else {
 					logging(LOG_ERR, "Username field not found\n");
 				}

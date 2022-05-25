@@ -70,12 +70,13 @@ Configuration settings:
 
 Config | Meaning | Example
 --- | --- | ---
-debug | extra logging in /var/log/auth | ... debug
-redis | hostname of redis server to cache successful authentications | redis=localhost
-port | port of redis server, defaults to 6379 | port=1234
-ttl | duration that cached results are remain valid for subsequent authentications, defaults to 5 seconds | ttl=5
-url | fqdn of SRAM server | url=https://sram.surf.nl
-token | the SRAM token for the SRAM Service to be uses for token introspection | token=...
+url | (required) fqdn of SRAM server | url=https://sram.surf.nl
+token | (required) the SRAM token for the SRAM Service to be uses for token introspection | token=...
+debug | (optional) extra logging in /var/log/auth | ... debug
+redis | (optional) hostname of redis server to cache successful authentications | redis=localhost
+port | (optional) port of redis server, defaults to 6379 | port=1234
+ttl | (optional) duration that cached results are remain valid for subsequent authentications, defaults to 5 seconds | ttl=5
+entitled | (optional) the SRAM collaboration that the user needs to be member of | entitled=urn:mace:surf.nl:sram:group:surfresearch
 
 
 

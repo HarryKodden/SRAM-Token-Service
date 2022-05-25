@@ -14,6 +14,7 @@ void free_config(CONFIG *cfg) {
 		free(cfg->redis);
 		free(cfg->port);
 		free(cfg->ttl);
+		free(cfg->entitled);
 		free(cfg);
 	}
 }
@@ -90,6 +91,7 @@ CONFIG *parse_config(int argc, const char **argv) {
 	cfg->ttl = NULL;
 	cfg->redis = NULL;
 	cfg->port = NULL;
+	cfg->entitled = NULL;
 
 	for (i = 0; i < argc; ++i) {
 		int retval = 0;
@@ -104,6 +106,7 @@ CONFIG *parse_config(int argc, const char **argv) {
 		if (retval == 0) retval = parse_str_option(argv[i], "ttl=", &cfg->ttl);
 		if (retval == 0) retval = parse_str_option(argv[i], "redis=", &cfg->redis);
 		if (retval == 0) retval = parse_str_option(argv[i], "port=", &cfg->port);
+		if (retval == 0) retval = parse_str_option(argv[i], "entitled=", &cfg->entitled);
 
 		if (0 == retval) {
 			logging(LOG_ERR, "Invalid option: %s", argv[i]);
@@ -136,6 +139,9 @@ CONFIG *parse_config(int argc, const char **argv) {
 	logging(LOG_DEBUG, "token => %s", cfg->token);
 	if (cfg->redis) {
 		logging(LOG_DEBUG, "redis => %s:%s", cfg->redis, cfg->port);
+	}
+	if (cfg->entitled) {
+		logging(LOG_DEBUG, "entitled => %s", cfg->entitled);
 	}
 	logging(LOG_DEBUG, "ttl => %s", cfg->ttl);
 
