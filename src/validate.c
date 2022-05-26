@@ -101,17 +101,17 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 					}
 
 					if (result && cfg->entitled) {
-						json_value *entitledments = lookup(json, "user.eduperson_entitlement ");
+						json_value *entitlements = lookup(json, "user.eduperson_entitlement ");
 
 						result = false;
-						if (entitledments) {
-							for (unsigned int x = 0; !result && x < entitledments->u.array.length; x++) {
-								if (entitledments->u.array.values[x]) {
-									char *entitledment = entitledments->u.array.values[x]->u.string.ptr;
-									logging(LOG_DEBUG, "Inspecting: %s...\n", entitledment);
-									result = (strcasecmp(cfg->entitled, entitledment) == 0);
+						if (entitlements) {
+							for (unsigned int x = 0; !result && x < entitlements->u.array.length; x++) {
+								if (entitlements->u.array.values[x]) {
+									char *entitlement = entitlements->u.array.values[x]->u.string.ptr;
+									logging(LOG_DEBUG, "Inspecting: %s...\n", entitlement);
+									result = (strcasecmp(cfg->entitled, entitlement) == 0);
 									if (result) {
-										logging(LOG_DEBUG, "Match: %s !\n", entitledment);
+										logging(LOG_DEBUG, "Match: %s !\n", entitlements);
 									}
 								}
 							}

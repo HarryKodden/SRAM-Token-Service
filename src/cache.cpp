@@ -112,7 +112,7 @@ class Cache {
 		redisContext *redis = NULL;
 		
 		char *key_digest(CONFIG *cfg, const char *username) {
-			const char *items[] = { cfg->url, cfg->token, username, NULL };
+			const char *items[] = { cfg->url, cfg->token, username, cfg->entitled, NULL };
 			return digest(items);
 		}
 
