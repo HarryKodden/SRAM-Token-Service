@@ -105,6 +105,8 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 
 						result = false;
 						if (entitlements) {
+							result = (*cfg->entitled == '*');
+							
 							for (unsigned int x = 0; !result && x < entitlements->u.array.length; x++) {
 								if (entitlements->u.array.values[x]) {
 									char *entitlement = entitlements->u.array.values[x]->u.string.ptr;

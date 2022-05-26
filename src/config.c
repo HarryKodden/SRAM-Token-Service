@@ -140,9 +140,12 @@ CONFIG *parse_config(int argc, const char **argv) {
 	if (cfg->redis) {
 		logging(LOG_DEBUG, "redis => %s:%s", cfg->redis, cfg->port);
 	}
-	if (cfg->entitled) {
-		logging(LOG_DEBUG, "entitled => %s", cfg->entitled);
+
+	if (! cfg->entitled) {
+		cfg->entitled = strdup("*");
 	}
+	
+	logging(LOG_DEBUG, "entitled => %s", cfg->entitled);
 	logging(LOG_DEBUG, "ttl => %s", cfg->ttl);
 
 	return cfg;
