@@ -15,9 +15,10 @@ services:
     container_name: sandbox
     hostname: sandbox
     environment:
+      - URL=${URL:-https://sram.surf.nl}
       - USERNAME=${USERNAME:-undefined}
       - TOKEN=${TOKEN:-undefined}
-      - ENTITLED=${ENTITLED:-undefined}
+      - ENTITLED=${ENTITLED:-*}
     volumes:
       - ../../:/home/worker/work
       - ~/.gitconfig:/home/worker/.gitconfig:ro
