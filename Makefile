@@ -3,8 +3,8 @@ all: pam-module
 # Make pam_sram_validate module
 .PHONY: pam-module
 pam-module: json-parser src/pam_sram_validate.so
-src/pam_sram_validate.so: src/Makefile
 	$(MAKE) -C src/
+src/pam_sram_validate.so: src/Makefile
 src/Makefile: src/Makefile.am src/configure.ac
 	cd src && ./autogen.sh && ./configure
 
