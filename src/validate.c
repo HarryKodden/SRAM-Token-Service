@@ -104,19 +104,35 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 						json_value *entitlements = lookup(json, "user.eduperson_entitlement ");
 
 						result = false;
+
 						if (entitlements) {
-							result = (*cfg->entitled == '*');
-							
-							for (unsigned int x = 0; !result && x < entitlements->u.array.length; x++) {
-								if (entitlements->u.array.values[x]) {
-									char *entitlement = entitlements->u.array.values[x]->u.string.ptr;
-									logging(LOG_DEBUG, "Inspecting: %s...\n", entitlement);
-									result = (strcasecmp(cfg->entitled, entitlement) == 0);
-									if (result) {
-										logging(LOG_DEBUG, "Match: %s !\n", entitlements);
+							char *allowed_entitlements = strdup(cfg->entitled);
+							char *current = allowed_entitlements, *next = NULL;
+
+							while (!result && current) {
+								if ((next = strchr(current, ',')) != NULL) {
+									*next++ = '\0';
+								}
+
+								logging(LOG_DEBUG, "Current: %s...\n", current);
+
+								result = (*cfg->entitled == '*');
+
+								for (unsigned int x = 0; !result && x < entitlements->u.array.length; x++) {
+									if (entitlements->u.array.values[x]) {
+										char *entitlement = entitlements->u.array.values[x]->u.string.ptr;
+										logging(LOG_DEBUG, "Inspecting: %s...\n", entitlement);
+										result = (strcasecmp(current, entitlement) == 0);
+										if (result) {
+											logging(LOG_DEBUG, "Match: %s !\n", current);
+										}
 									}
 								}
+
+								current = next;
 							}
+
+							free(allowed_entitlements);
 						} else {
 							logging(LOG_ERR, "Error inspecting entitlements\n");
 						}

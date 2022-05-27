@@ -12,10 +12,10 @@ Researcher <-- SRAM: Authenticated
 end
 group Connect with Service
 Researcher -> ResearchCloud: Connect with a service...
-ResearchCloud --> SRAM: GET /api/services
+ResearchCloud --> SRAM: GET /api/services/mine
 Researcher <-- ResearchCloud: Show services
 Researcher -> ResearchCloud: Select service to connect with
-ResearchCloud -> SRAM: /user_tokens/generate for that service
+ResearchCloud -> SRAM: /user_tokens/generate_token for that service
 ResearchCloud <-- SRAM: User Token for that service
 end
 end
