@@ -2,17 +2,21 @@ all: pam-module
 
 # Make pam_sram_validate module
 .PHONY: pam-module
-pam-module: json-parser src/pam_sram_validate.so
+pam-module: json-parser-package src/pam_sram_validate.so
 	$(MAKE) -C src/
 src/pam_sram_validate.so: src/Makefile
 src/Makefile: src/Makefile.am src/configure.ac
 	cd src && ./autogen.sh && ./configure
 
 # Get / Update json-parser package...
-.PHONY: json-parser
-json-parser:
+.PHONY: json-parser-package
+json-parser-package: json-parser
 	git submodule init
 	git submodule update
+
+# Get json-parser package...
+json-parser: 
+	git clone https://github.com/json-parser/json-parser.git
 
 # Cleanup...
 .PHONY: clean
