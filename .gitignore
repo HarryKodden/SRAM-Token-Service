@@ -1,6 +1,6 @@
 .ionide
 config.log
-.deps
+src/.deps/*
 .libs
 *.o
 .env
