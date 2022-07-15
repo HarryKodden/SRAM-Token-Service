@@ -10,6 +10,7 @@
 
 #include "logging.h"
 #include "api.h"
+
 typedef struct {
 	char* payload;
 	size_t size;
