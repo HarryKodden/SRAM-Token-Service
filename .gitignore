@@ -2,6 +2,7 @@
 config.log
 src/.deps/*
 .libs
+.vscode/
 *.o
 .env
 src/autom4te.cache/
