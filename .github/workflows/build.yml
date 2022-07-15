@@ -1,0 +1,81 @@
+---
+name: Builds
+
+on:
+  push:
+  pull_request:
+  release:
+    tags:
+      - "v*"
+    types: [published]
+
+  workflow_dispatch:
+
+jobs:
+  Build:
+    name: Test building
+    if: always()
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, compiler: gcc, version: 7 }
+          - { os: ubuntu-latest, compiler: gcc, version: 8 }
+          - { os: ubuntu-latest, compiler: gcc, version: 9 }
+          - { os: ubuntu-latest, compiler: gcc, version: 10 }
+          - { os: ubuntu-latest, compiler: gcc, version: 11 }
+          - { os: ubuntu-latest, compiler: clang, version: 9 }
+          - { os: ubuntu-latest, compiler: clang, version: 10 }
+          - { os: ubuntu-latest, compiler: clang, version: 11 }
+          - { os: ubuntu-latest, compiler: clang, version: 12 }
+          - { os: ubuntu-latest, compiler: clang, version: 13 }
+          - { os: ubuntu-latest, compiler: clang, version: 14 }
+          - { os: macos-10.15, compiler: native }
+          - { os: macos-11, compiler: native }
+          - { os: macos-12, compiler: native }
+
+    # set CC to 'cc' for MacOS and the (e.g.) clang-12 for Linux
+    env:
+      CC: ${{ matrix.compiler == 'native' && 'cc' || format('{0}-{1}',matrix.compiler,matrix.version) }}
+
+    steps:
+      - name: Housekeeping
+        run: |
+          sudo apt-get purge man-db
+        if: runner.os == 'Linux'
+
+      - name: Install gcc
+        run: |
+          sudo add-apt-repository --yes --update ppa:ubuntu-toolchain-r/test
+          sudo apt-get install --yes gcc-${{matrix.version}}
+        if: runner.os == 'Linux' && matrix.compiler == 'gcc'
+
+      - name: Install clang
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          sudo bash ./llvm.sh ${{ matrix.version }}
+        if: runner.os == 'Linux' &&  matrix.compiler == 'clang'
+
+      - name: Show compiler version
+        run: $CC --version
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install --yes sudo git rsyslog libssl-dev libpam0g-dev libcurl4-openssl-dev libhiredis-dev autoconf
+        if: runner.os == 'Linux'
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test compilation
+        run: |
+          make all
+
+      - name: Test make clean
+        run: |
+          make clean
+          rm -rf json-parser/
+          make clean
