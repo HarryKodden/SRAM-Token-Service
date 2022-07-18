@@ -34,9 +34,9 @@ jobs:
           - { os: ubuntu-latest, compiler: clang, version: 13 }
           - { os: ubuntu-latest, compiler: clang, version: 14 }
 
-    # set CC ...
+    # set CC...
     env:
-      CC: ${{ matrix.compiler == format('{0}-{1}',matrix.compiler,matrix.version) }}
+      CC: ${{ format('{0}-{1}',matrix.compiler,matrix.version) }}
 
     steps:
       - name: Housekeeping
