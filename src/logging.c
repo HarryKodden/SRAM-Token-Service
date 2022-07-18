@@ -14,7 +14,14 @@ void logging(int priority, const char *fmt, ...) {
         va_list l;
 
         va_start(l, fmt);
+        #ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#endif
         pam_vsyslog(logging_pamh, priority, fmt, l);
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
         va_end(l);
     }
 }

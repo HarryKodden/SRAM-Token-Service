@@ -46,7 +46,14 @@ static char *str_printf(const char * fmt, ...) {
 	va_list args;
 	
 	va_start(args, fmt);
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#endif
 	int rc = vasprintf(&buffer, fmt, args);
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 	va_end(args);
 
 	if (rc == -1) {
