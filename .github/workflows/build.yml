@@ -33,13 +33,10 @@ jobs:
           - { os: ubuntu-latest, compiler: clang, version: 12 }
           - { os: ubuntu-latest, compiler: clang, version: 13 }
           - { os: ubuntu-latest, compiler: clang, version: 14 }
-          - { os: macos-10.15, compiler: native }
-          - { os: macos-11, compiler: native }
-          - { os: macos-12, compiler: native }
 
-    # set CC to 'cc' for MacOS and the (e.g.) clang-12 for Linux
+    # set CC ...
     env:
-      CC: ${{ matrix.compiler == 'native' && 'cc' || format('{0}-{1}',matrix.compiler,matrix.version) }}
+      CC: ${{ matrix.compiler == format('{0}-{1}',matrix.compiler,matrix.version) }}
 
     steps:
       - name: Housekeeping
@@ -62,7 +59,7 @@ jobs:
       - name: Show compiler version
         run: $CC --version
 
-      - name: Install dependencies
+      - name: Install dependencies on Linux...
         run: |
           sudo apt-get install --yes sudo git rsyslog libssl-dev libpam0g-dev libcurl4-openssl-dev libhiredis-dev autoconf
         if: runner.os == 'Linux'
