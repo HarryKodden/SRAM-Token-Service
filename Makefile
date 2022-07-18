@@ -1,5 +1,12 @@
 all: pam-module
 
+# Environment variables, with not specified, these defaults will apply...
+URL ?= http://sram.surf.nl
+TOKEN ?= "sram-service-API-token-here"
+USERNAME ?= $(shell whoami)
+ENTITLED ?= *
+export
+
 # Make pam_sram_validate module
 .PHONY: pam-module
 pam-module: json-parser-package src/pam_sram_validate.so
@@ -27,22 +34,9 @@ clean:
 # Install...
 .PHONY: install
 install: pam-module
-ifndef URL
-	$(error URL is required environment variable !)
-endif
-ifndef TOKEN
-	$(error TOKEN is required environment variable !)
-endif
-ifndef ENTTILEMENT
-	echo ENTTILEMENT is not specified, is optional environment variable
-endif
-
 	sudo -E $(MAKE) -C src install
 
 # Test...
 .PHONY: test
 test: install
-ifndef USERNAME
-	$(error USERNAME is required environment variable !)
-endif
 	$(MAKE) -C src test

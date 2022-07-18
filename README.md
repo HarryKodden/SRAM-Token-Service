@@ -1,5 +1,6 @@
 
 ![CodeQL](https://github.com/harrykodden/SRAM-Token-Service/workflows/CodeQL/badge.svg)
+
 # Diagrams
 
 ### SRAM Authentication Generic Flow
@@ -26,7 +27,7 @@ curl --request POST \
 
 Examples:
 
-* [Token Wrapping using Hashicorp Vault...](wrapping.md)
-* [Service Authentication using a Wallet](wallet.md)
-* [Service to Service Delegated Access](delegated_access.md)
-* [Encrypted Mounting](hu.md)
+- [Token Wrapping using Hashicorp Vault...](wrapping.md)
+- [Service Authentication using a Wallet](wallet.md)
+- [Service to Service Delegated Access](delegated_access.md)
+- [Encrypted Mounting](hu.md)
