@@ -27,9 +27,22 @@ clean:
 # Install...
 .PHONY: install
 install: pam-module
-	$(MAKE) -C src install
+ifndef URL
+	$(error URL is required environment variable !)
+endif
+ifndef TOKEN
+	$(error TOKEN is required environment variable !)
+endif
+ifndef ENTTILEMENT
+	echo ENTTILEMENT is not specified, is optional environment variable
+endif
+
+	sudo -E $(MAKE) -C src install
 
 # Test...
 .PHONY: test
 test: install
+ifndef USERNAME
+	$(error USERNAME is required environment variable !)
+endif
 	$(MAKE) -C src test

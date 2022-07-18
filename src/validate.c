@@ -108,7 +108,7 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 					}
 
 					if (result && cfg->entitled) {
-						json_value *entitlements = lookup(json, "user.eduperson_entitlement ");
+						json_value *entitlements = lookup(json, "user.eduperson_entitlement");
 
 						result = false;
 

@@ -1,9 +1,12 @@
-install: pam_sram_validate.so
+install-exec-local:
 	sudo mkdir -p /lib/security
-	sudo cp pam_sram_validate.so /lib/security/
+	sudo ln -sf /usr/local/bin/pam_sram_validate.so /lib/security/
 
-test: install
+
+install-data-local:
 	@echo "auth required pam_sram_validate.so debug url=$${URL} token=$${TOKEN}" redis=redis entitled=$${ENTITLED} | sudo tee "/etc/pam.d/test" >/dev/null
+
+test:
 	pamtester test $${USERNAME} authenticate
 
 AUTOMAKE_OPTIONS = subdir-objects
