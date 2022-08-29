@@ -99,8 +99,8 @@ class Cache {
 				logging(LOG_INFO, "Cache Hit for: %s\n", key);
 			} else {
 				logging(LOG_INFO, "Dropping cache for: %s\n", key);
-				void *reply = redisCommand(redis, "DEL %s", key);
-				freeReplyObject(reply);
+				void *r = redisCommand(redis, "DEL %s", key);
+				freeReplyObject(r);
 			}
 
 			free(key);

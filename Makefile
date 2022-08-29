@@ -1,7 +1,7 @@
 all: pam-module
 
 # Environment variables, with not specified, these defaults will apply...
-URL ?= http://sram.surf.nl
+URL ?= https://sram.surf.nl
 TOKEN ?= "sram-service-API-token-here"
 USERNAME ?= $(shell whoami)
 ENTITLED ?= *
