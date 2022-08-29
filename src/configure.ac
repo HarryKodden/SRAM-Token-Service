@@ -12,6 +12,10 @@ AC_LANG_POP([C])
 AC_PROG_CXX
 AC_PROG_CC
 
+# Extra compile flags for shared object
+CFLAGS="$CFLAGS -fPIC"
+CXXFLAGS="$CXXFLAGS -fPIC"
+
 # Checks for header files.
 AC_CHECK_HEADERS([limits.h stddef.h stdint.h stdlib.h string.h syslog.h])
 
