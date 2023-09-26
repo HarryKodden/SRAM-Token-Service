@@ -90,7 +90,7 @@ bool validate(CONFIG *cfg, const char *username, const char *token) {
 	);
 
 	if (response) {
-		json_value * json = json_parse(response, strnlen(response,BUFSIZ));
+		json_value * json = json_parse(response, strlen(response));
 		free(response);
 
 		if (json) {
